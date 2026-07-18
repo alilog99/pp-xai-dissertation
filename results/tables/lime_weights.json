@@ -1,0 +1,294 @@
+{
+  "source": "aggregated from results/figures/lime_*.csv",
+  "n_explanations": 6,
+  "explanations": [
+    {
+      "file": "lime_central_gradient_boosting_instance_0.csv",
+      "model": "central_gradient_boosting",
+      "instance": 0,
+      "weights": [
+        {
+          "feature": "cat__property_type_Hotels > 0.00",
+          "weight": 150.94399861761323
+        },
+        {
+          "feature": "cat__property_type_D2 General Assembly and Leisure plus Night Clubs and Theatres <= 0.00",
+          "weight": -137.8352767829929
+        },
+        {
+          "feature": "cat__property_type_C1 Hotels <= 0.00",
+          "weight": -119.55148519041968
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution <= 0.00",
+          "weight": 116.50095879329297
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services <= 0.00",
+          "weight": -110.48142469662066
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses <= 0.00",
+          "weight": 102.2460279180948
+        },
+        {
+          "feature": "-0.08 < num__storey_count <= 1.16",
+          "weight": -87.73881785042997
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services <= 0.00",
+          "weight": 58.52019268806958
+        },
+        {
+          "feature": "cat__property_type_Residential Institutions: Universities and Colleges <= 0.00",
+          "weight": 54.39091618153218
+        },
+        {
+          "feature": "cat__main_fuel_Waste Heat > 0.00",
+          "weight": 29.962050150013603
+        }
+      ],
+      "top_feature": "cat__property_type_Hotels > 0.00"
+    },
+    {
+      "file": "lime_central_gradient_boosting_instance_1.csv",
+      "model": "central_gradient_boosting",
+      "instance": 1,
+      "weights": [
+        {
+          "feature": "cat__property_type_Hotels <= 0.00",
+          "weight": -154.83657928698483
+        },
+        {
+          "feature": "cat__property_type_D2 General Assembly and Leisure plus Night Clubs and Theatres <= 0.00",
+          "weight": -139.33577041977472
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution <= 0.00",
+          "weight": 112.30601514016804
+        },
+        {
+          "feature": "cat__property_type_C1 Hotels <= 0.00",
+          "weight": -110.47750430461949
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services > 0.00",
+          "weight": 105.80599529095494
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses <= 0.00",
+          "weight": 99.3153420621803
+        },
+        {
+          "feature": "cat__property_type_Residential Institutions: Universities and Colleges <= 0.00",
+          "weight": 61.07558072465264
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services <= 0.00",
+          "weight": 59.45828221266478
+        },
+        {
+          "feature": "cat__property_type_General Industrial and Special Industrial Groups <= 0.00",
+          "weight": 56.60012631054951
+        },
+        {
+          "feature": "-1.32 < num__storey_count <= -0.08",
+          "weight": 55.333333898210554
+        }
+      ],
+      "top_feature": "cat__property_type_Hotels <= 0.00"
+    },
+    {
+      "file": "lime_central_gradient_boosting_instance_2.csv",
+      "model": "central_gradient_boosting",
+      "instance": 2,
+      "weights": [
+        {
+          "feature": "cat__property_type_Hotels <= 0.00",
+          "weight": -138.61571469302137
+        },
+        {
+          "feature": "cat__property_type_D2 General Assembly and Leisure plus Night Clubs and Theatres <= 0.00",
+          "weight": -132.48228022649909
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services > 0.00",
+          "weight": 116.4390195700704
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution <= 0.00",
+          "weight": 115.0601662174374
+        },
+        {
+          "feature": "cat__property_type_C1 Hotels <= 0.00",
+          "weight": -115.01492350548482
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses <= 0.00",
+          "weight": 98.27497772001963
+        },
+        {
+          "feature": "cat__property_type_General Industrial and Special Industrial Groups <= 0.00",
+          "weight": 58.677272373054194
+        },
+        {
+          "feature": "cat__property_type_Residential Institutions: Universities and Colleges <= 0.00",
+          "weight": 56.4697161767016
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services <= 0.00",
+          "weight": 54.48791676594053
+        },
+        {
+          "feature": "cat__main_fuel_Other <= 0.00",
+          "weight": 47.017937521458094
+        }
+      ],
+      "top_feature": "cat__property_type_Hotels <= 0.00"
+    },
+    {
+      "file": "lime_federated_mlp_instance_0.csv",
+      "model": "federated_mlp",
+      "instance": 0,
+      "weights": [
+        {
+          "feature": "cat__property_type_C1 Hotels <= 0.00",
+          "weight": -164.51537609805408
+        },
+        {
+          "feature": "cat__property_type_Hotels > 0.00",
+          "weight": 150.45923852829054
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services <= 0.00",
+          "weight": -131.6213391171769
+        },
+        {
+          "feature": "cat__property_type_D2 General Assembly and Leisure plus Night Clubs and Theatres <= 0.00",
+          "weight": -113.27058932980862
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution <= 0.00",
+          "weight": 98.87303877213697
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses <= 0.00",
+          "weight": 80.08893266788976
+        },
+        {
+          "feature": "cat__property_type_General Industrial and Special Industrial Groups <= 0.00",
+          "weight": 66.95089938626124
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services <= 0.00",
+          "weight": 58.79910831033287
+        },
+        {
+          "feature": "cat__main_fuel_Other <= 0.00",
+          "weight": 55.89124398234448
+        },
+        {
+          "feature": "cat__main_fuel_Waste Heat > 0.00",
+          "weight": 49.48779386655167
+        }
+      ],
+      "top_feature": "cat__property_type_C1 Hotels <= 0.00"
+    },
+    {
+      "file": "lime_federated_mlp_instance_1.csv",
+      "model": "federated_mlp",
+      "instance": 1,
+      "weights": [
+        {
+          "feature": "cat__property_type_C1 Hotels <= 0.00",
+          "weight": -157.5729559956561
+        },
+        {
+          "feature": "cat__property_type_Hotels <= 0.00",
+          "weight": -152.08970467909688
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services > 0.00",
+          "weight": 132.8119991240903
+        },
+        {
+          "feature": "cat__property_type_D2 General Assembly and Leisure plus Night Clubs and Theatres <= 0.00",
+          "weight": -112.6312543149966
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution <= 0.00",
+          "weight": 101.87965025228849
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses <= 0.00",
+          "weight": 79.9101994620049
+        },
+        {
+          "feature": "cat__property_type_General Industrial and Special Industrial Groups <= 0.00",
+          "weight": 71.64594707147928
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services <= 0.00",
+          "weight": 60.3720135885987
+        },
+        {
+          "feature": "cat__property_type_B2 to B7 General Industrial and Special Industrial Groups <= 0.00",
+          "weight": -46.25126442460045
+        },
+        {
+          "feature": "cat__property_type_C2 Residential Institutions - Universities and colleges <= 0.00",
+          "weight": -45.05053000007386
+        }
+      ],
+      "top_feature": "cat__property_type_C1 Hotels <= 0.00"
+    },
+    {
+      "file": "lime_federated_mlp_instance_2.csv",
+      "model": "federated_mlp",
+      "instance": 2,
+      "weights": [
+        {
+          "feature": "cat__property_type_C1 Hotels <= 0.00",
+          "weight": -167.48281077248893
+        },
+        {
+          "feature": "cat__property_type_Hotels <= 0.00",
+          "weight": -153.88112680758445
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services > 0.00",
+          "weight": 131.9923475677204
+        },
+        {
+          "feature": "cat__property_type_D2 General Assembly and Leisure plus Night Clubs and Theatres <= 0.00",
+          "weight": -113.5535587216796
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution <= 0.00",
+          "weight": 98.9387081584212
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses <= 0.00",
+          "weight": 83.70860090524832
+        },
+        {
+          "feature": "cat__property_type_General Industrial and Special Industrial Groups <= 0.00",
+          "weight": 69.05924202516472
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services <= 0.00",
+          "weight": 59.56744766794997
+        },
+        {
+          "feature": "cat__main_fuel_Other <= 0.00",
+          "weight": 50.428674441922226
+        },
+        {
+          "feature": "cat__property_type_C2 Residential Institutions - Universities and colleges <= 0.00",
+          "weight": -48.66709278965722
+        }
+      ],
+      "top_feature": "cat__property_type_C1 Hotels <= 0.00"
+    }
+  ]
+}

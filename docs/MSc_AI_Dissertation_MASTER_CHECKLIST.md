@@ -823,7 +823,7 @@ class LIMEExplainer:
 - [x] Create LIME path in `src/xai/explainers.py`
 - [x] Generate LIME explanation for sample buildings (3 central + 3 federated instances)
 - [x] Save LIME plots → `results/figures/lime_*.png`
-- [ ] Save LIME weights → `results/tables/lime_weights.json` (weights currently beside plots as `lime_*.csv`)
+- [x] Save LIME weights → `results/tables/lime_weights.json` (aggregated from `results/figures/lime_*.csv`; 6 explanations)
 - [x] Compare LIME top features with SHAP top features (noted in results / dissertation drafts)
 
 ---
