@@ -61,5 +61,17 @@ streamlit run src/webapp/app.py
 
 ## Licence
 
-EPC data: Open Government Licence v3.0.  
+EPC data: Open Government Licence v3.0 — see [`docs/DATA_LICENCE.md`](docs/DATA_LICENCE.md).  
 Code: for academic use (University of Hull MSc dissertation).
+
+## Ethics
+
+This project uses open secondary EPC data and does not involve human participants.  
+See [`docs/ETHICS.md`](docs/ETHICS.md) (links to the official University of Hull Research Ethics Policy; the policy PDF is **not** redistributed in this repository).
+
+## Documentation
+
+- [`docs/README.md`](docs/README.md) — public docs index  
+- [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) — reproduce experiments  
+- [`docs/MSc_AI_Dissertation_MASTER_CHECKLIST.md`](docs/MSc_AI_Dissertation_MASTER_CHECKLIST.md) — project checklist  
+- [`dissertation/glossary_and_abbreviations.md`](dissertation/glossary_and_abbreviations.md) — glossary (includes Optuna, FedProx, metrics)

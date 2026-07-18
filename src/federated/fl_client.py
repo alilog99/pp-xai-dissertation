@@ -47,7 +47,10 @@ def train_local(
     batch_size: int = 64,
     lr: float = 1e-3,
     device: str | None = None,
+    mu: float = 0.0,
+    global_params: list[np.ndarray] | None = None,
 ) -> dict[str, float]:
+    """Local SGD/Adam step. When ``mu > 0``, adds FedProx proximal penalty."""
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
     model.train()
@@ -58,6 +61,11 @@ def train_local(
     loader = DataLoader(ds, batch_size=batch_size, shuffle=True)
     opt = torch.optim.Adam(model.parameters(), lr=lr)
     loss_fn = nn.MSELoss()
+    global_tensors: list[torch.Tensor] | None = None
+    if mu > 0.0 and global_params is not None:
+        global_tensors = [
+            torch.tensor(p, dtype=torch.float32, device=device) for p in global_params
+        ]
     total_loss = 0.0
     n = 0
     for _ in range(epochs):
@@ -66,6 +74,11 @@ def train_local(
             opt.zero_grad()
             pred = model(xb)
             loss = loss_fn(pred, yb)
+            if global_tensors is not None:
+                proximal = torch.tensor(0.0, device=device)
+                for w, w0 in zip(model.parameters(), global_tensors):
+                    proximal = proximal + torch.sum((w - w0) ** 2)
+                loss = loss + (mu / 2.0) * proximal
             loss.backward()
             opt.step()
             total_loss += float(loss.item()) * len(xb)
@@ -89,17 +102,20 @@ def evaluate_local(
     return {"rmse": rmse, "r2": r2, "predictions": pred}  # type: ignore[return-value]
 
 
-def fedavg_simulate(
+def federated_simulate(
     client_data: dict[str, tuple[np.ndarray, np.ndarray]],
     X_test: np.ndarray,
     y_test: np.ndarray,
     rounds: int = 10,
     local_epochs: int = 3,
+    mu: float = 0.0,
+    label: str = "FedAvg",
 ) -> dict[str, Any]:
     """
-    Lightweight FedAvg simulation without requiring a Flower server process.
+    Lightweight FL simulation without a Flower server process.
 
-    Still uses the same MLP architecture intended for Flower deployment.
+    ``mu == 0`` → FedAvg local training.
+    ``mu > 0``  → FedProx proximal regularisation (Li et al., 2020).
     """
     n_features = next(iter(client_data.values()))[0].shape[1]
     global_model = EnergyMLP(n_features)
@@ -108,12 +124,20 @@ def fedavg_simulate(
     for rnd in range(1, rounds + 1):
         client_weights = []
         client_sizes = []
+        global_params = get_parameters(global_model)
         for _city, (X_c, y_c) in client_data.items():
             if len(X_c) == 0:
                 continue
             local = EnergyMLP(n_features)
-            set_parameters(local, get_parameters(global_model))
-            train_local(local, X_c, y_c, epochs=local_epochs)
+            set_parameters(local, global_params)
+            train_local(
+                local,
+                X_c,
+                y_c,
+                epochs=local_epochs,
+                mu=mu,
+                global_params=global_params if mu > 0.0 else None,
+            )
             client_weights.append(get_parameters(local))
             client_sizes.append(len(X_c))
 
@@ -132,7 +156,7 @@ def fedavg_simulate(
 
         metrics = evaluate_local(global_model, X_test, y_test)
         history.append({"round": rnd, "rmse": metrics["rmse"], "r2": metrics["r2"]})
-        print(f"  Round {rnd}: RMSE={metrics['rmse']:.3f} R2={metrics['r2']:.3f}")
+        print(f"  [{label}] Round {rnd}: RMSE={metrics['rmse']:.3f} R2={metrics['r2']:.3f}")
 
     final = evaluate_local(global_model, X_test, y_test)
     return {
@@ -142,7 +166,48 @@ def fedavg_simulate(
         "test_r2": final["r2"],
         "predictions": final["predictions"],
         "parameters": get_parameters(global_model),
+        "mu": mu,
+        "strategy": label,
     }
+
+
+def fedavg_simulate(
+    client_data: dict[str, tuple[np.ndarray, np.ndarray]],
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    rounds: int = 10,
+    local_epochs: int = 3,
+) -> dict[str, Any]:
+    """FedAvg wrapper (no proximal term)."""
+    return federated_simulate(
+        client_data,
+        X_test,
+        y_test,
+        rounds=rounds,
+        local_epochs=local_epochs,
+        mu=0.0,
+        label="FedAvg",
+    )
+
+
+def fedprox_simulate(
+    client_data: dict[str, tuple[np.ndarray, np.ndarray]],
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    rounds: int = 10,
+    local_epochs: int = 3,
+    mu: float = 0.01,
+) -> dict[str, Any]:
+    """FedProx wrapper with proximal coefficient ``mu`` (default 0.01)."""
+    return federated_simulate(
+        client_data,
+        X_test,
+        y_test,
+        rounds=rounds,
+        local_epochs=local_epochs,
+        mu=mu,
+        label=f"FedProx(mu={mu})",
+    )
 
 
 # Optional Flower NumPyClient wrapper for full Flower runs

@@ -61,17 +61,26 @@ def main() -> None:
         print("Statistical tests:", tests)
         plot_pred_vs_actual(y_test, pred_f, figures / "pred_vs_actual_federated.png", title="Federated MLP")
 
-    # Round history plot if available
-    hist_path = tables / "federated_rounds.csv"
-    if hist_path.exists():
+    # Round history plot — prefer overlay if FedProx history exists
+    hist_avg_path = tables / "fl_convergence_fedavg.csv"
+    if not hist_avg_path.exists():
+        hist_avg_path = tables / "federated_rounds.csv"
+    hist_prox_path = tables / "fl_convergence_fedprox.csv"
+    if hist_avg_path.exists():
         import matplotlib.pyplot as plt
 
-        hist = pd.read_csv(hist_path)
-        plt.figure(figsize=(7, 4))
-        plt.plot(hist["round"], hist["rmse"], marker="o")
+        hist = pd.read_csv(hist_avg_path)
+        plt.figure(figsize=(8, 4.5))
+        plt.plot(hist["round"], hist["rmse"], marker="o", label="FedAvg")
+        if hist_prox_path.exists():
+            hist_p = pd.read_csv(hist_prox_path)
+            plt.plot(hist_p["round"], hist_p["rmse"], marker="s", label="FedProx (μ=0.01)")
+            plt.title("Federated convergence: FedAvg vs FedProx")
+            plt.legend()
+        else:
+            plt.title("FedAvg convergence")
         plt.xlabel("Federated round")
         plt.ylabel("Test RMSE")
-        plt.title("FedAvg convergence")
         plt.tight_layout()
         plt.savefig(figures / "federated_convergence.png", dpi=150)
         plt.close()

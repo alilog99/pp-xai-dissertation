@@ -33,11 +33,8 @@ I thank my supervisor Mona for guidance, and the University of Hull MSc AI progr
 
 ## Glossary
 
-- **EPC:** Energy Performance Certificate
-- **FL:** Federated Learning
-- **FedAvg:** Federated Averaging
-- **SHAP:** SHapley Additive exPlanations
-- **LIME:** Local Interpretable Model-agnostic Explanations
-- **OGL:** Open Government Licence
-- **UPRN:** Unique Property Reference Number
-- **PP-XAI:** Privacy-Preserving Explainable AI (this project)
+See the full glossary and abbreviations list:
+
+→ **[glossary_and_abbreviations.md](glossary_and_abbreviations.md)**
+
+(Includes EPC/FL/XAI terms, metrics, and definitions of Random Forest, XGBoost, LightGBM, MLP, and federated client record counts.)

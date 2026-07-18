@@ -11,6 +11,7 @@ See individual files:
 - [chapter4_results.md](chapter4_results.md)
 - [chapter5_discussion.md](chapter5_discussion.md)
 - [chapter6_conclusion.md](chapter6_conclusion.md)
+- [glossary_and_abbreviations.md](glossary_and_abbreviations.md)
 
 **Figures/tables:** copy from `../results/figures/` and `../results/tables/` into the final Word/LaTeX submission.
 

@@ -17,6 +17,7 @@ except Exception as exc:  # noqa: BLE001
 
 
 def main() -> None:
+    # Optional Flower entrypoint — in-process FedAvg/FedProx live in fl_client.py
     strategy = fl.server.strategy.FedAvg(
         fraction_fit=1.0,
         fraction_evaluate=1.0,
@@ -24,6 +25,9 @@ def main() -> None:
         min_evaluate_clients=3,
         min_available_clients=3,
     )
+    # Note: proximal FedProx for this dissertation is implemented in
+    # `fl_client.fedprox_simulate(mu=0.01)` (in-process). Flower's FedProx
+    # strategy can be swapped here for a full server deployment if needed.
     fl.server.start_server(
         server_address="0.0.0.0:8080",
         config=fl.server.ServerConfig(num_rounds=8),
