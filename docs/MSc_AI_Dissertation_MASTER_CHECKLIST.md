@@ -9,7 +9,7 @@
 >
 > **GitHub:** Public repo https://github.com/alilog99/pp-xai-dissertation — `requirements.txt` verified on `master` (~183 lines / 3.2KB). Secrets, `raw-data/`, and `dev-docs/` are gitignored.
 >
-> **Manual M1–M5:** Complete. Bulk CSVs in `raw-data/` (~70GB). `.env` present with empty `EPC_API_KEY` — **API not required** (see local `dev-docs/MANUAL_DATA_NOTES.md`). Public ethics/data docs: [`docs/ETHICS.md`](ETHICS.md), [`docs/DATA_LICENCE.md`](DATA_LICENCE.md). Remaining `[ ]` items: federated beeswarm / SHAP comparison chart, demo video, final PDF.
+> **Manual M1–M5:** Complete. Bulk CSVs in `raw-data/` (~70GB). `.env` present with empty `EPC_API_KEY` — **API not required** (see local `dev-docs/MANUAL_DATA_NOTES.md`). Public ethics/data docs: [`docs/ETHICS.md`](ETHICS.md), [`docs/DATA_LICENCE.md`](DATA_LICENCE.md). Remaining `[ ]` items: framework architecture fig, demo video, final PDF.
 >
 > **Note:** This checklist lives under `docs/` for public GitHub submission. Local planning files and the University ethics PDF remain in gitignored `dev-docs/`.
 
@@ -907,11 +907,11 @@ class FederatedXAIPipeline:
 ```
 
 - [x] Federated vs centralised SHAP comparison in `scripts/run_xai.py` / `explainers.py`
-- [ ] Compute SHAP values **per client** after each FL round
-- [ ] Aggregate with weighted average
+- [x] Compute SHAP values **per client** after each FL round → `scripts/run_federated_shap.py`, `results/models/shap_federated_per_round.npz`
+- [x] Aggregate with weighted average → `src/xai/fed_xai.py` + `results/tables/federated_shap_aggregated.csv` / `federated_shap_rounds.json`
 - [x] Compare vs centralised SHAP — Spearman fidelity in `results/tables/xai_stability.json`
-- [x] Save fidelity results → `results/tables/xai_stability.json` (Spearman ρ≈0.96)
-- [x] **Target: Spearman ρ > 0.85** (met; Jaccard not separately reported)
+- [x] Save fidelity results → `results/tables/xai_stability.json` (Spearman ρ≈0.96); per-round FL SHAP fidelity vs RF also in `federated_shap_rounds.json`
+- [x] **Target: Spearman ρ > 0.85** (met for final GB vs Fed MLP in `xai_stability.json`; Jaccard also reported in `federated_shap_rounds.json`)
 
 ---
 
@@ -988,7 +988,7 @@ def statistical_tests(centralised_preds, federated_preds, y_true):
 - [x] Run paired comparison tests (see `statistical_tests.json`)
 - [x] Save statistical test results → `results/tables/statistical_tests.json`
 - [x] Generate convergence plot (FL rounds vs RMSE) → `results/figures/federated_convergence.png`
-- [ ] Generate SHAP comparison bar chart (federated vs centralised top features) → `results/figures/shap_comparison.png`
+- [x] Generate SHAP comparison bar chart (federated vs centralised top features) → `results/figures/shap_comparison.png`
 
 ---
 
@@ -997,7 +997,7 @@ All figures needed in dissertation:
 
 - [ ] `fig1_framework_architecture.png` — Draw in draw.io or matplotlib (FL + XAI flow diagram)
 - [x] `fig2_shap_summary_centralised.png` — SHAP beeswarm plot (centralised RF; also `shap_summary_centralised.png`)
-- [ ] `fig3_shap_summary_federated.png` — SHAP beeswarm plot (federated)
+- [x] `fig3_shap_summary_federated.png` — SHAP summary (federated weighted agg; also `shap_summary_federated.png`)
 - [x] `fig4_lime_example.png` — covered by `results/figures/lime_*.png` (rename/copy for dissertation if needed)
 - [x] `fig5_fl_convergence.png` — covered by `federated_convergence.png`
 - [x] `fig6_baseline_comparison.png` — covered by `baseline_rmse.png` / `baseline_r2.png`

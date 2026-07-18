@@ -1,0 +1,489 @@
+{
+  "rounds": 8,
+  "clients": [
+    "london",
+    "manchester",
+    "birmingham"
+  ],
+  "client_sizes": {
+    "london": 3379,
+    "manchester": 1136,
+    "birmingham": 1033
+  },
+  "aggregation": "weighted_average_by_client_n",
+  "shap_config": {
+    "n_background": 25,
+    "n_explain": 30,
+    "nsamples": 50
+  },
+  "history_summary": [
+    {
+      "round": 1,
+      "client_sizes": {
+        "london": 3379,
+        "manchester": 1136,
+        "birmingham": 1033
+      },
+      "top_features": [
+        {
+          "feature": "cat__main_fuel_Natural Gas",
+          "mean_abs_shap": 8.299016080264057
+        },
+        {
+          "feature": "cat__has_aircon_yes",
+          "mean_abs_shap": 6.4533856966031395
+        },
+        {
+          "feature": "cat__has_aircon_no",
+          "mean_abs_shap": 6.352970668685518
+        },
+        {
+          "feature": "num__storey_count",
+          "mean_abs_shap": 6.176734381253968
+        },
+        {
+          "feature": "cat__property_type_B1 Offices and Workshop businesses",
+          "mean_abs_shap": 5.16223427288317
+        },
+        {
+          "feature": "cat__main_fuel_Grid Supplied Electricity",
+          "mean_abs_shap": 3.5544348043388654
+        },
+        {
+          "feature": "cat__heating_type_Air Conditioning",
+          "mean_abs_shap": 3.3606301372194154
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+          "mean_abs_shap": 2.9384468982868888
+        },
+        {
+          "feature": "cat__heating_type_Heating and Natural Ventilation",
+          "mean_abs_shap": 2.4376748815179266
+        },
+        {
+          "feature": "cat__property_type_Hotels",
+          "mean_abs_shap": 1.5032352065752586
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "client_sizes": {
+        "london": 3379,
+        "manchester": 1136,
+        "birmingham": 1033
+      },
+      "top_features": [
+        {
+          "feature": "num__storey_count",
+          "mean_abs_shap": 20.189647509384454
+        },
+        {
+          "feature": "cat__main_fuel_Natural Gas",
+          "mean_abs_shap": 14.760547581817162
+        },
+        {
+          "feature": "cat__has_aircon_no",
+          "mean_abs_shap": 10.278717689438103
+        },
+        {
+          "feature": "cat__has_aircon_yes",
+          "mean_abs_shap": 7.815449876846973
+        },
+        {
+          "feature": "cat__property_type_B1 Offices and Workshop businesses",
+          "mean_abs_shap": 7.431502717704945
+        },
+        {
+          "feature": "cat__heating_type_Air Conditioning",
+          "mean_abs_shap": 7.32313424140901
+        },
+        {
+          "feature": "cat__heating_type_Heating and Natural Ventilation",
+          "mean_abs_shap": 5.894255795296534
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+          "mean_abs_shap": 5.821556167602471
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses",
+          "mean_abs_shap": 4.113989890245801
+        },
+        {
+          "feature": "cat__property_type_Hotels",
+          "mean_abs_shap": 2.993718876528084
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "client_sizes": {
+        "london": 3379,
+        "manchester": 1136,
+        "birmingham": 1033
+      },
+      "top_features": [
+        {
+          "feature": "num__storey_count",
+          "mean_abs_shap": 31.077325436686365
+        },
+        {
+          "feature": "cat__main_fuel_Natural Gas",
+          "mean_abs_shap": 21.488064131736582
+        },
+        {
+          "feature": "cat__has_aircon_no",
+          "mean_abs_shap": 11.033125416561973
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses",
+          "mean_abs_shap": 9.134313961341062
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+          "mean_abs_shap": 8.928262999781149
+        },
+        {
+          "feature": "cat__property_type_B1 Offices and Workshop businesses",
+          "mean_abs_shap": 8.570181085463341
+        },
+        {
+          "feature": "cat__heating_type_Air Conditioning",
+          "mean_abs_shap": 7.938765499338204
+        },
+        {
+          "feature": "cat__has_aircon_yes",
+          "mean_abs_shap": 7.716171559139338
+        },
+        {
+          "feature": "cat__heating_type_Heating and Natural Ventilation",
+          "mean_abs_shap": 6.1202657976265
+        },
+        {
+          "feature": "cat__property_type_Hotels",
+          "mean_abs_shap": 5.765494547277195
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "client_sizes": {
+        "london": 3379,
+        "manchester": 1136,
+        "birmingham": 1033
+      },
+      "top_features": [
+        {
+          "feature": "num__storey_count",
+          "mean_abs_shap": 33.843206795536425
+        },
+        {
+          "feature": "cat__main_fuel_Natural Gas",
+          "mean_abs_shap": 25.95929298770724
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses",
+          "mean_abs_shap": 16.126884548377276
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+          "mean_abs_shap": 13.870505939683163
+        },
+        {
+          "feature": "cat__has_aircon_no",
+          "mean_abs_shap": 10.753730538064373
+        },
+        {
+          "feature": "cat__heating_type_Air Conditioning",
+          "mean_abs_shap": 9.60732727439241
+        },
+        {
+          "feature": "cat__property_type_B1 Offices and Workshop businesses",
+          "mean_abs_shap": 8.734328412359362
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution",
+          "mean_abs_shap": 8.640806261312344
+        },
+        {
+          "feature": "cat__property_type_Hotels",
+          "mean_abs_shap": 7.965838548382178
+        },
+        {
+          "feature": "cat__has_aircon_yes",
+          "mean_abs_shap": 6.84804131648935
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "client_sizes": {
+        "london": 3379,
+        "manchester": 1136,
+        "birmingham": 1033
+      },
+      "top_features": [
+        {
+          "feature": "num__storey_count",
+          "mean_abs_shap": 34.68912793143833
+        },
+        {
+          "feature": "cat__main_fuel_Natural Gas",
+          "mean_abs_shap": 27.025439020683834
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses",
+          "mean_abs_shap": 23.75710183891229
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+          "mean_abs_shap": 19.394437974831874
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution",
+          "mean_abs_shap": 13.149086713820019
+        },
+        {
+          "feature": "cat__property_type_Hotels",
+          "mean_abs_shap": 11.471377166795369
+        },
+        {
+          "feature": "cat__heating_type_Air Conditioning",
+          "mean_abs_shap": 10.141109455185413
+        },
+        {
+          "feature": "cat__has_aircon_no",
+          "mean_abs_shap": 9.818278726854812
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services",
+          "mean_abs_shap": 7.632599014487792
+        },
+        {
+          "feature": "cat__property_type_B1 Offices and Workshop businesses",
+          "mean_abs_shap": 6.971257722093862
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "client_sizes": {
+        "london": 3379,
+        "manchester": 1136,
+        "birmingham": 1033
+      },
+      "top_features": [
+        {
+          "feature": "num__storey_count",
+          "mean_abs_shap": 32.046602803428854
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses",
+          "mean_abs_shap": 25.29014180966685
+        },
+        {
+          "feature": "cat__main_fuel_Natural Gas",
+          "mean_abs_shap": 23.49954718201933
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+          "mean_abs_shap": 22.015256340648374
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution",
+          "mean_abs_shap": 16.76030321163027
+        },
+        {
+          "feature": "cat__property_type_Hotels",
+          "mean_abs_shap": 13.134697768006653
+        },
+        {
+          "feature": "cat__has_aircon_no",
+          "mean_abs_shap": 10.87582762990013
+        },
+        {
+          "feature": "cat__heating_type_Air Conditioning",
+          "mean_abs_shap": 10.161817558777646
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services",
+          "mean_abs_shap": 9.801103867800343
+        },
+        {
+          "feature": "cat__has_aircon_yes",
+          "mean_abs_shap": 5.311818426434838
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "client_sizes": {
+        "london": 3379,
+        "manchester": 1136,
+        "birmingham": 1033
+      },
+      "top_features": [
+        {
+          "feature": "num__storey_count",
+          "mean_abs_shap": 33.111373958666434
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses",
+          "mean_abs_shap": 28.19463467374996
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+          "mean_abs_shap": 25.417019300463227
+        },
+        {
+          "feature": "cat__main_fuel_Natural Gas",
+          "mean_abs_shap": 24.57402209669928
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution",
+          "mean_abs_shap": 19.303443064753104
+        },
+        {
+          "feature": "cat__property_type_Hotels",
+          "mean_abs_shap": 14.821678228658712
+        },
+        {
+          "feature": "cat__has_aircon_no",
+          "mean_abs_shap": 12.865453258988216
+        },
+        {
+          "feature": "cat__heating_type_Air Conditioning",
+          "mean_abs_shap": 10.119144070278608
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services",
+          "mean_abs_shap": 9.311153641500235
+        },
+        {
+          "feature": "cat__property_type_C1 Hotels",
+          "mean_abs_shap": 5.900796451823739
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "client_sizes": {
+        "london": 3379,
+        "manchester": 1136,
+        "birmingham": 1033
+      },
+      "top_features": [
+        {
+          "feature": "num__storey_count",
+          "mean_abs_shap": 30.861164561619645
+        },
+        {
+          "feature": "cat__property_type_Offices and Workshop Businesses",
+          "mean_abs_shap": 26.458121204055434
+        },
+        {
+          "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+          "mean_abs_shap": 24.52457116132973
+        },
+        {
+          "feature": "cat__property_type_Storage or Distribution",
+          "mean_abs_shap": 20.596308097889548
+        },
+        {
+          "feature": "cat__main_fuel_Natural Gas",
+          "mean_abs_shap": 20.580378902934616
+        },
+        {
+          "feature": "cat__property_type_Hotels",
+          "mean_abs_shap": 14.113875424538477
+        },
+        {
+          "feature": "cat__property_type_Retail/Financial and Professional Services",
+          "mean_abs_shap": 10.801625960432611
+        },
+        {
+          "feature": "cat__has_aircon_no",
+          "mean_abs_shap": 10.76297714952515
+        },
+        {
+          "feature": "cat__heating_type_Air Conditioning",
+          "mean_abs_shap": 9.028721342050096
+        },
+        {
+          "feature": "cat__property_type_C1 Hotels",
+          "mean_abs_shap": 7.6221335164641575
+        }
+      ]
+    }
+  ],
+  "final_top_features": [
+    {
+      "feature": "num__storey_count",
+      "mean_abs_shap": 30.861164561619645
+    },
+    {
+      "feature": "cat__property_type_Offices and Workshop Businesses",
+      "mean_abs_shap": 26.458121204055434
+    },
+    {
+      "feature": "cat__property_type_A1/A2 Retail and Financial/Professional services",
+      "mean_abs_shap": 24.52457116132973
+    },
+    {
+      "feature": "cat__property_type_Storage or Distribution",
+      "mean_abs_shap": 20.596308097889548
+    },
+    {
+      "feature": "cat__main_fuel_Natural Gas",
+      "mean_abs_shap": 20.580378902934616
+    },
+    {
+      "feature": "cat__property_type_Hotels",
+      "mean_abs_shap": 14.113875424538477
+    },
+    {
+      "feature": "cat__property_type_Retail/Financial and Professional Services",
+      "mean_abs_shap": 10.801625960432611
+    },
+    {
+      "feature": "cat__has_aircon_no",
+      "mean_abs_shap": 10.76297714952515
+    },
+    {
+      "feature": "cat__heating_type_Air Conditioning",
+      "mean_abs_shap": 9.028721342050096
+    },
+    {
+      "feature": "cat__property_type_C1 Hotels",
+      "mean_abs_shap": 7.6221335164641575
+    },
+    {
+      "feature": "cat__property_type_B1 Offices and Workshop businesses",
+      "mean_abs_shap": 4.565146719635549
+    },
+    {
+      "feature": "cat__has_aircon_yes",
+      "mean_abs_shap": 4.209038625111061
+    },
+    {
+      "feature": "cat__property_type_Residential Institutions: Universities and Colleges",
+      "mean_abs_shap": 3.2963461065859034
+    },
+    {
+      "feature": "cat__property_type_General Industrial and Special Industrial Groups",
+      "mean_abs_shap": 2.3518006504566715
+    },
+    {
+      "feature": "cat__main_fuel_Grid Supplied Electricity",
+      "mean_abs_shap": 2.194869954248346
+    }
+  ],
+  "fidelity_vs_centralised_rf": {
+    "spearman_rho": 0.7762,
+    "spearman_p": 0.0,
+    "jaccard_top5": 0.6667,
+    "cosine_sim": 0.9208
+  }
+}
