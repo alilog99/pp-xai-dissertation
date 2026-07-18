@@ -1,0 +1,7 @@
+{
+  "epc_rows": 5663,
+  "epc_with_uprn": 4765,
+  "uprn_file": null,
+  "status": "awaiting_download",
+  "message": "No OS Open UPRN file found. Register free at https://osdatahub.os.uk/ and place CSV/GPKG under /Users/ali/Development/UNIVERSITYOFHULL/FINAL-PROJECT/WKPS/Building-Energy-Prediction/data/raw/os_open_uprn"
+}

@@ -1,0 +1,48 @@
+# Raw and processed data (too large for git)
+raw-data/
+data/raw/
+data/processed/
+data/federated/
+results/models/
+
+# Secrets
+.env
+*.pem
+
+# Local planning / university docs (not for public GitHub)
+dev-docs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large artefacts
+*.csv
+*.zip
+*.pkl
+*.pt
+*.joblib
+*.parquet
+*.geojson
+*.json.gz
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.agents/
+.claude/
+.history/

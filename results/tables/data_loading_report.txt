@@ -1,0 +1,19 @@
+======================================================
+ EPC DATA LOADING REPORT
+======================================================
+ Domestic raw scanned:      13,794,680
+ Domestic filtered:         36
+ Non-domestic raw scanned:  840,760
+ Non-domestic filtered:     5,627
+ Combined records:          5,663
+   commercial: 5,627 (99.4%)
+   residential: 36 (0.6%)
+ Target mean:               237.4
+ Target std:                194.7
+ Target min/max:            0 / 1999
+ Federated partitions:
+   london: 3,449 records (mean energy 234.0)
+   manchester: 1,160 records (mean energy 242.1)
+   birmingham: 1,054 records (mean energy 243.1)
+ Non-IID ratio:             1.04 (>1.2 = heterogeneous)
+======================================================

@@ -1,0 +1,8 @@
+{
+  "gradient_boosting_MAE": 80.01948139679729,
+  "federated_MAE": 84.91650606447512,
+  "wilcoxon_stat": 261254.5,
+  "wilcoxon_p": 1.0623974078168668e-05,
+  "ttest_stat": -4.072416575400675,
+  "ttest_p": 4.9834882844981586e-05
+}
