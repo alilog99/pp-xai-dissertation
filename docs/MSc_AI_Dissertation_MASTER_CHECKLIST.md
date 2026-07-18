@@ -5,11 +5,11 @@
 **Target Submission:** 27 August 2026 | **Hard Deadline:** 10 September 2026  
 **Today:** 18 July 2026 | **Remaining:** ~6 weeks
 
-> **PIPELINE STATUS (18 Jul 2026):** Phases 0–7 implemented in repo; chapter drafts in `dissertation/`. Combined n=5663; best central GB R²≈0.56; FedAvg MLP R²≈0.52; SHAP Spearman≈0.96. See `results/`.
+> **PIPELINE STATUS (18 Jul 2026):** Phases 0–7 implemented in repo; chapter drafts in `dissertation/`. Combined n=5663; best central GB R²≈0.56; FedAvg MLP R²≈0.52; SHAP Spearman≈0.96. Centralised RF TreeExplainer SHAP → `results/models/shap_centralised_rf.npy` + beeswarm `results/figures/shap_summary_centralised.png` / `fig2_shap_summary_centralised.png`.
 >
 > **GitHub:** Public repo https://github.com/alilog99/pp-xai-dissertation — `requirements.txt` verified on `master` (~183 lines / 3.2KB). Secrets, `raw-data/`, and `dev-docs/` are gitignored.
 >
-> **Manual M1–M5:** Complete. Bulk CSVs in `raw-data/` (~70GB). `.env` present with empty `EPC_API_KEY` — **API not required** (see local `dev-docs/MANUAL_DATA_NOTES.md`). Public ethics/data docs: [`docs/ETHICS.md`](ETHICS.md), [`docs/DATA_LICENCE.md`](DATA_LICENCE.md). Remaining `[ ]` items include named dissertation figures, demo video, final PDF.
+> **Manual M1–M5:** Complete. Bulk CSVs in `raw-data/` (~70GB). `.env` present with empty `EPC_API_KEY` — **API not required** (see local `dev-docs/MANUAL_DATA_NOTES.md`). Public ethics/data docs: [`docs/ETHICS.md`](ETHICS.md), [`docs/DATA_LICENCE.md`](DATA_LICENCE.md). Remaining `[ ]` items: federated beeswarm / SHAP comparison chart, demo video, final PDF.
 >
 > **Note:** This checklist lives under `docs/` for public GitHub submission. Local planning files and the University ethics PDF remain in gitignored `dev-docs/`.
 
@@ -748,10 +748,10 @@ class SHAPExplainer:
 
 - [x] Create `src/xai/explainers.py` (SHAP + LIME)
 - [x] Compute SHAP values for **centralised best model** → `results/figures/shap_importance_central_*.png/csv`
-- [ ] Compute SHAP values for **centralised RF** → save to `results/models/shap_centralised_rf.npy`
-- [ ] Generate SHAP summary (beeswarm) plot → `results/figures/shap_summary_centralised.png`
+- [x] Compute SHAP values for **centralised RF** → save to `results/models/shap_centralised_rf.npy`
+- [x] Generate SHAP summary (beeswarm) plot → `results/figures/shap_summary_centralised.png`
 - [x] Generate top feature importance bar chart → `results/figures/shap_importance_central_*.png`
-- [ ] Generate waterfall plot for 3 sample buildings → `results/figures/shap_waterfall_*.png`
+- [x] Generate waterfall plot for 3 sample buildings → `results/figures/shap_waterfall_*.png` (also `shap_waterfall_building_1..3.png`)
 - [x] **Record top features** (SHAP importance CSVs / dissertation Table III draft)
 
 ---
@@ -996,7 +996,7 @@ def statistical_tests(centralised_preds, federated_preds, y_true):
 All figures needed in dissertation:
 
 - [ ] `fig1_framework_architecture.png` — Draw in draw.io or matplotlib (FL + XAI flow diagram)
-- [ ] `fig2_shap_summary_centralised.png` — SHAP beeswarm plot (centralised)
+- [x] `fig2_shap_summary_centralised.png` — SHAP beeswarm plot (centralised RF; also `shap_summary_centralised.png`)
 - [ ] `fig3_shap_summary_federated.png` — SHAP beeswarm plot (federated)
 - [x] `fig4_lime_example.png` — covered by `results/figures/lime_*.png` (rename/copy for dissertation if needed)
 - [x] `fig5_fl_convergence.png` — covered by `federated_convergence.png`
@@ -1105,7 +1105,7 @@ if predict_btn:
 - [ ] Implement LIME bar chart in UI (plots on disk; not yet embedded in Streamlit)
 - [ ] Add EPC band calculation logic (A–G from kWh/m²/year)
 - [ ] Add EU AI Act compliance note
-- [ ] Test locally: `streamlit run src/webapp/app.py`
+- [x] Test locally: use `/bin/bash scripts/run_streamlit.sh` (arm64; plain `streamlit` under Conda/Rosetta breaks NumPy)
 - [ ] Record 2-minute demo video of the app (for dissertation appendix)
 - [ ] Take screenshots → `results/figures/webapp_screenshot_*.png`
 
@@ -1189,7 +1189,7 @@ if predict_btn:
 - [ ] Write figure captions
 - [x] Add abstract (300 words max) — draft present
 - [x] Add acknowledgements — draft present
-- [ ] Check word count (~15,000 words)
+- [x] Check word count (~15,000 words) — drafts+appendices in `dissertation/` ≈14.6k–15k; trim/format for Hull template still open
 - [ ] Proofread / run Grammarly
 - [ ] Check University of Hull dissertation template compliance
 - [ ] Export final PDF
