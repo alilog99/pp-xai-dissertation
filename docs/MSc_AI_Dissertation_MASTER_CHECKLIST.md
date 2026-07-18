@@ -9,7 +9,7 @@
 >
 > **GitHub:** Public repo https://github.com/alilog99/pp-xai-dissertation — `requirements.txt` verified on `master` (~183 lines / 3.2KB). Secrets, `raw-data/`, and `dev-docs/` are gitignored.
 >
-> **Manual M1–M5:** Complete. Bulk CSVs in `raw-data/` (~70GB). `.env` present with empty `EPC_API_KEY` — **API not required** (see local `dev-docs/MANUAL_DATA_NOTES.md`). Public ethics/data docs: [`docs/ETHICS.md`](ETHICS.md), [`docs/DATA_LICENCE.md`](DATA_LICENCE.md). Remaining `[ ]` items: framework architecture fig, demo video, final PDF.
+> **Manual M1–M5:** Complete. Bulk CSVs in `raw-data/` (~70GB). `.env` present with empty `EPC_API_KEY` — **API not required** (see local `dev-docs/MANUAL_DATA_NOTES.md`). Public ethics/data docs: [`docs/ETHICS.md`](ETHICS.md), [`docs/DATA_LICENCE.md`](DATA_LICENCE.md). Remaining `[ ]` items: demo video, final PDF / Hull template polish.
 >
 > **Note:** This checklist lives under `docs/` for public GitHub submission. Local planning files and the University ethics PDF remain in gitignored `dev-docs/`.
 
@@ -995,7 +995,7 @@ def statistical_tests(centralised_preds, federated_preds, y_true):
 ### 6.2 Results Figures Checklist
 All figures needed in dissertation:
 
-- [ ] `fig1_framework_architecture.png` — Draw in draw.io or matplotlib (FL + XAI flow diagram)
+- [x] `fig1_framework_architecture.png` — FL + XAI flow diagram (`results/figures/fig1_framework_architecture.png`)
 - [x] `fig2_shap_summary_centralised.png` — SHAP beeswarm plot (centralised RF; also `shap_summary_centralised.png`)
 - [x] `fig3_shap_summary_federated.png` — SHAP summary (federated weighted agg; also `shap_summary_federated.png`)
 - [x] `fig4_lime_example.png` — covered by `results/figures/lime_*.png` (rename/copy for dissertation if needed)
