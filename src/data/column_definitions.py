@@ -203,3 +203,27 @@ CATEGORICAL_FEATURES = [
 ]
 
 FINAL_FEATURE_COLUMNS = NUMERICAL_FEATURES + CATEGORICAL_FEATURES
+
+# Domestic-style illustrative bands (kWh/m²/year) for demo labelling.
+# Commercial primary energy uses a different official scale; we still map
+# predicted intensity to A–G for stakeholder communication in the prototype.
+EPC_BANDS_KWH: dict[str, tuple[float, float]] = {
+    "A": (0.0, 50.0),
+    "B": (50.0, 90.0),
+    "C": (90.0, 150.0),
+    "D": (150.0, 230.0),
+    "E": (230.0, 330.0),
+    "F": (330.0, 450.0),
+    "G": (450.0, float("inf")),
+}
+
+
+def energy_to_epc_band(kwh_per_m2_year: float) -> str:
+    """Map energy intensity (kWh/m²/year) to an illustrative EPC band A–G."""
+    value = float(kwh_per_m2_year)
+    if value < 0:
+        return "G"
+    for band, (lo, hi) in EPC_BANDS_KWH.items():
+        if lo <= value < hi:
+            return band
+    return "G"

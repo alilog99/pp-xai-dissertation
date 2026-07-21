@@ -1102,9 +1102,9 @@ if predict_btn:
 - [x] Create `src/webapp/app.py`
 - [x] Connect to trained centralised / FL artefacts
 - [x] Show SHAP importance in UI (global plot + table)
-- [ ] Implement LIME bar chart in UI (plots on disk; not yet embedded in Streamlit)
-- [ ] Add EPC band calculation logic (A–G from kWh/m²/year)
-- [ ] Add EU AI Act compliance note
+- [x] Implement LIME bar chart in UI (from `lime_weights.json` + optional saved PNG)
+- [x] Add EPC band calculation logic (A–G from kWh/m²/year) → `energy_to_epc_band` in `column_definitions.py`
+- [x] Add EU AI Act compliance note (Article 13 expander + post-predict info)
 - [x] Test locally: use `/bin/bash scripts/run_streamlit.sh` (arm64; plain `streamlit` under Conda/Rosetta breaks NumPy)
 - [ ] Record 2-minute demo video of the app (for dissertation appendix)
 - [ ] Take screenshots → `results/figures/webapp_screenshot_*.png`
