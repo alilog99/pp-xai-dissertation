@@ -1,0 +1,67 @@
+{
+  "hypothesis": "H3",
+  "statement": "Top-5 influential building features are consistent across at least 80% of federated clients",
+  "model_used": "gradient_boosting",
+  "top5_per_client": {
+    "london": [
+      "num__storey_count",
+      "cat__property_type_Offices and Workshop Businesses",
+      "cat__main_fuel_Natural Gas",
+      "cat__property_type_Storage or Distribution",
+      "cat__property_type_C1 Hotels"
+    ],
+    "manchester": [
+      "num__storey_count",
+      "cat__main_fuel_Natural Gas",
+      "cat__property_type_Storage or Distribution",
+      "cat__property_type_Offices and Workshop Businesses",
+      "cat__property_type_Hotels"
+    ],
+    "birmingham": [
+      "cat__property_type_Storage or Distribution",
+      "num__storey_count",
+      "cat__property_type_Offices and Workshop Businesses",
+      "cat__main_fuel_Natural Gas",
+      "cat__property_type_Hotels"
+    ]
+  },
+  "features_in_all_3_clients": [
+    "cat__main_fuel_Natural Gas",
+    "cat__property_type_Offices and Workshop Businesses",
+    "cat__property_type_Storage or Distribution",
+    "num__storey_count"
+  ],
+  "features_in_at_least_2_clients": [
+    "cat__main_fuel_Natural Gas",
+    "cat__property_type_Hotels",
+    "cat__property_type_Offices and Workshop Businesses",
+    "cat__property_type_Storage or Distribution",
+    "num__storey_count"
+  ],
+  "cross_client_consistency_all3": 0.8,
+  "cross_client_consistency_ge2of3": 1.0,
+  "average_jaccard": 0.7778,
+  "pairwise_jaccard": [
+    {
+      "Pair": "London vs Manchester",
+      "Jaccard_score": 0.6667,
+      "Shared_top5_features": "cat__main_fuel_Natural Gas; cat__property_type_Offices and Workshop Businesses; cat__property_type_Storage or Distribution; num__storey_count",
+      "n_shared": 4
+    },
+    {
+      "Pair": "London vs Birmingham",
+      "Jaccard_score": 0.6667,
+      "Shared_top5_features": "cat__main_fuel_Natural Gas; cat__property_type_Offices and Workshop Businesses; cat__property_type_Storage or Distribution; num__storey_count",
+      "n_shared": 4
+    },
+    {
+      "Pair": "Manchester vs Birmingham",
+      "Jaccard_score": 1.0,
+      "Shared_top5_features": "cat__main_fuel_Natural Gas; cat__property_type_Hotels; cat__property_type_Offices and Workshop Businesses; cat__property_type_Storage or Distribution; num__storey_count",
+      "n_shared": 5
+    }
+  ],
+  "pass_criterion": "average Jaccard > 0.60",
+  "h3_status": "PASS",
+  "note_80pct_clients": "With 3 clients, \u226580% requires membership in all 3 clients (ceil(0.8\u00d73)=3). Features in all 3: 4/5."
+}

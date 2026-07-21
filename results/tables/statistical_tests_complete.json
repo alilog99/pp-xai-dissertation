@@ -5,11 +5,19 @@
   "wilcoxon_p": 1.8514059966279632e-05,
   "ttest_stat": -3.9601029781039534,
   "ttest_p": 7.969322525538543e-05,
+  "central_gb_rmse": 113.03831689854388,
+  "federated_rmse": 118.20890979875924,
+  "central_gb_r2": 0.5594956445967482,
+  "federated_r2": 0.5182749106225496,
+  "central_gb_mae": 80.01948139679729,
+  "federated_mae": 84.80581775300998,
   "central_gb_rmse_ci95_low": 105.93847583555254,
   "central_gb_rmse_ci95_high": 120.08012772405509,
   "federated_rmse_ci95_low": 110.81232508586514,
   "federated_rmse_ci95_high": 125.4339116055567,
   "rmse_cis_overlap": true,
   "cohens_d_abs_error": 0.05898788436849243,
-  "cohens_d_interpretation": "negligible"
+  "cohens_d_interpretation": "negligible",
+  "n_bootstrap": 2000,
+  "n_test": 1110
 }

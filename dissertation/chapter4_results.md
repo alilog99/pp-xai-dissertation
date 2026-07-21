@@ -41,33 +41,41 @@ FedAvg MLP over eight rounds:
 
 | Round | Test RMSE | Test R² |
 |-------|-----------|---------|
-| 1 | 206.1 | −0.47 |
-| 2 | 143.8 | 0.29 |
-| 3 | 129.6 | 0.42 |
-| 4 | 122.6 | 0.48 |
-| 5 | 119.8 | 0.51 |
-| 6 | 119.2 | 0.51 |
-| 7 | 118.7 | 0.51 |
-| 8 | **118.3** | **0.517** |
+| 1 | 201.51 | −0.400 |
+| 2 | 142.47 | 0.300 |
+| 3 | 128.19 | 0.433 |
+| 4 | 121.67 | 0.490 |
+| 5 | 119.21 | 0.510 |
+| 6 | 118.57 | 0.515 |
+| 7 | 118.38 | 0.517 |
+| 8 | **118.21** | **0.518** |
 
-Final federated metrics: RMSE **118.32**, MAE **84.92**, R² **0.517**, MAPE **49.57%**. The federated MLP nearly matches the centralised MLP (R² 0.528) and trails the best tree model by a modest margin. **RQ1 answer:** Yes—FedAvg can approach centralised neural performance on this geographic split without pooling raw client data during training. Convergence: `federated_convergence.png`.
+Final federated metrics: RMSE **118.21**, MAE **84.81**, R² **0.518**, MAPE **49.45%**. The federated MLP nearly matches the centralised MLP (R² 0.528) and trails the best tree model by a modest margin. **RQ1 / H1:** Yes—FedAvg approaches centralised neural performance without pooling raw client data. Convergence: `federated_convergence.png`.
+
+### 4.4.1 Extended convergence (20 rounds)
+
+FedAvg and FedProx were extended to 20 rounds (`federated_convergence_20rounds.png`, `fl_strategy_comparison.csv`). FedAvg improved from RMSE 117.80 (R8 in the extension run) to **116.23** (R20, R² 0.534); FedProx reached **115.48** (R² 0.540). Both were within 5% of central MLP RMSE by round 4. Primary reported RQ1 numbers remain the eight-round artefacts above.
 
 ## 4.5 Statistical comparison
 
 Paired tests on absolute errors (gradient boosting vs federated MLP):
 
-- Wilcoxon p ≈ **1.06×10⁻⁵**
-- Paired t-test p ≈ **4.98×10⁻⁵**
-- MAE: 80.02 (central GB) vs 84.92 (federated)
+- Wilcoxon p ≈ **1.85×10⁻⁵** (W = 262,557.5)
+- Paired t-test p ≈ **7.97×10⁻⁵** (t = −3.96)
+- MAE: 80.02 (central GB) vs 84.81 (federated); Δ ≈ 4.79
+- Bootstrap 95% CI RMSE (n=2000): GB **[105.94, 120.08]**; Fed **[110.81, 125.43]** (overlap: YES)
+- Cohen’s d (abs. errors) = **0.059** (negligible)
 
-The gap is statistically significant but small relative to the privacy benefit narrative: federated training forgoes a few points of MAE to keep microdata local.
+The gap is statistically significant but small in practical magnitude, supporting H1’s “close but not identical” reading.
 
-## 4.6 Explainability results (RQ2, RQ3)
+## 4.6 Explainability results (RQ2, RQ3, H3)
 
-SHAP mean |SHAP| Spearman correlation between centralised gradient boosting and federated MLP: **0.956** (p ≈ 5.7×10⁻⁴⁷). Top centralised drivers include `storey_count`, hotel/office/storage property-type indicators, and natural gas fuel—aligned with building-physics intuition that typology and vertical configuration matter for large buildings. LIME instance plots were generated for both models under `results/figures/lime_*`.
+SHAP mean |SHAP| Spearman correlation between centralised gradient boosting and federated MLP: **0.956** (p ≈ 5.7×10⁻⁴⁷). **H2 supported** (ρ > 0.85). Top drivers include `storey_count`, hotel/office/storage property-type indicators, and natural gas fuel.
 
-**RQ2:** Federated explanations are highly stable relative to centralised SHAP rankings on this corpus.  
-**RQ3:** Dominant features are storey-related numerics and property/fuel categoricals; rankings remain consistent across training regimes.
+**H3:** Per-client TreeExplainer SHAP on centralised GB yielded average pairwise Jaccard of top-5 sets = **0.78** (PASS). 4/5 features appear in all three clients; 5/5 in ≥2/3. Figure: `per_client_shap_comparison.png`.
+
+**RQ2:** Federated explanations are highly stable relative to centralised SHAP rankings.  
+**RQ3:** Dominant features are storey-related numerics and property/fuel categoricals; rankings remain consistent across clients and training regimes.
 
 ## 4.7 Prototype demonstration (Objective 5)
 

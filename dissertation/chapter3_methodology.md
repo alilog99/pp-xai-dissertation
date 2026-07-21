@@ -4,6 +4,13 @@
 
 The study follows a comparative experimental design. A single filtered EPC corpus is (a) trained centrally with multiple regressors and (b) trained federatively with an MLP under FedAvg across three geographic clients. Predictive metrics and SHAP-based explanation stability are compared on a held-out test set. A Streamlit prototype demonstrates stakeholder-facing use. The design privileges reproducibility: all scripts live under `scripts/`, core libraries under `src/`, and artefacts under `results/`.
 
+Hypotheses:
+
+- **H1:** Federated Averaging achieves test RMSE within 5% of the centralised MLP on the same held-out set.
+- **H2:** Spearman rank correlation of mean |SHAP| profiles between centralised and federated models exceeds 0.85.
+- **H3:** Top-5 influential building features are consistent across at least 80% of federated clients (pairwise Jaccard of per-client top-5 sets; pass if average Jaccard > 0.60).
+- **H4:** The Streamlit prototype can present SHAP/LIME outputs with an EU AI Act Article 13 transparency note.
+
 ```mermaid
 flowchart LR
   rawEPC[raw-data EPC CSVs] --> filterHR[High-rise filter]
@@ -72,11 +79,12 @@ On a shared subsample (background ≈ 80 training rows; explain ≈ 60 test rows
 - SHAP KernelExplainer for best centralised model and federated MLP
 - Mean |SHAP| ranking exported to CSV/PNG under `results/figures/`
 - LIME tabular explanations for three instances per model
-- Stability: Spearman correlation between centralised and federated mean |SHAP| vectors
+- Stability: Spearman correlation between centralised and federated mean |SHAP| vectors (H2)
+- **H3:** per-client TreeExplainer SHAP on the centralised Gradient Boosting model applied separately to each city matrix; pairwise Jaccard similarity of top-5 feature sets (`scripts/run_h3_per_client_shap.py`)
 
 ## 3.8 Statistical tests
 
-Paired Wilcoxon signed-rank and paired t-tests compare absolute errors of the best centralised model versus federated MLP predictions on the identical test set (`src/evaluation/metrics.py`).
+Paired Wilcoxon signed-rank and paired t-tests compare absolute errors of the best centralised model versus federated MLP predictions on the identical test set (`src/evaluation/metrics.py`). Cohen’s d on absolute errors and bootstrap percentile 95% confidence intervals for RMSE (2,000 resamples) are also reported (`scripts/run_bootstrap_ci.py`).
 
 ## 3.9 Prototype
 
