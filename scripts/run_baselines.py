@@ -70,9 +70,14 @@ def main() -> None:
     plot_metrics_bar(df, figures / "baseline_r2.png", "R2")
 
     best = min(metrics.items(), key=lambda kv: kv[1]["RMSE"])[0]
-    plot_pred_vs_actual(y_test, preds[best], figures / f"pred_vs_actual_{best}.png", title=f"{best} — pred vs actual")
-    np.save(processed / f"pred_{best}.npy", preds[best])
+    # All pred-vs-actual plots use the held-out test set (never training predictions).
     for name, pred in preds.items():
+        plot_pred_vs_actual(
+            y_test,
+            pred,
+            figures / f"pred_vs_actual_{name}.png",
+            title=f"{name} — pred vs actual (held-out test set)",
+        )
         np.save(processed / f"pred_{name}.npy", pred)
 
     save_models(models, models_dir)
