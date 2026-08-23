@@ -7,8 +7,8 @@ The study follows a comparative experimental design. A single filtered EPC corpu
 Hypotheses:
 
 - **H1:** Federated Averaging achieves test RMSE within 5% of the centralised MLP on the same held-out set.
-- **H2:** Spearman rank correlation of mean |SHAP| profiles between centralised and federated models exceeds 0.85.
-- **H3:** Top-5 influential building features are consistent across at least 80% of federated clients (pairwise Jaccard of per-client top-5 sets; pass if average Jaccard > 0.60).
+- **H2:** Spearman rank correlation of mean |SHAP| profiles between the centralised Gradient Boosting model and the federated MLP exceeds 0.85.
+- **H3:** Pairwise Jaccard similarity of per-client top-5 SHAP feature sets exceeds 0.60 on average (primary pass criterion). A secondary check requires that at least four of the five leading features appear in all three city clients.
 - **H4:** The Streamlit prototype can present SHAP/LIME outputs with an EU AI Act Article 13 transparency note.
 
 ```mermaid
@@ -66,7 +66,7 @@ Models in `src/models/centralised_models.py`:
 - LightGBM (`n_jobs=1` for macOS OpenMP stability)
 - MLPRegressor (128–64 hidden units, early stopping)
 
-Metrics: RMSE, MAE, R², MAPE. Best model by RMSE proceeds to primary SHAP comparison.
+Metrics: RMSE, MAE, R², MAPE. The best model by RMSE (Gradient Boosting) is used for the primary KernelSHAP comparison versus the federated MLP. A supplementary figure compares federated weighted SHAP with centralised Random Forest attributions.
 
 ## 3.6 Federated learning protocol
 
@@ -76,10 +76,11 @@ An MLP (`EnergyMLP` in `src/federated/fl_client.py`) is trained with in-process 
 
 On a shared subsample (background ≈ 80 training rows; explain ≈ 60 test rows):
 
-- SHAP KernelExplainer for best centralised model and federated MLP
+- SHAP KernelExplainer for the best centralised model (Gradient Boosting) and the federated MLP (`scripts/run_xai.py`)
 - Mean |SHAP| ranking exported to CSV/PNG under `results/figures/`
 - LIME tabular explanations for three instances per model
-- Stability: Spearman correlation between centralised and federated mean |SHAP| vectors (H2)
+- Stability (H2): Spearman correlation between Gradient Boosting and federated MLP mean |SHAP| vectors (`results/tables/xai_stability.json`)
+- Supplementary RF comparison: federated weighted SHAP versus centralised Random Forest (`scripts/run_federated_shap.py`; not the H2 test statistic)
 - **H3:** per-client TreeExplainer SHAP on the centralised Gradient Boosting model applied separately to each city matrix; pairwise Jaccard similarity of top-5 feature sets (`scripts/run_h3_per_client_shap.py`)
 
 ## 3.8 Statistical tests

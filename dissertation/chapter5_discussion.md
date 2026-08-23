@@ -8,9 +8,9 @@ Federated Averaging closed nearly all of the gap to the centralised MLP while tr
 
 ## 5.2 Interpreting explanation stability
 
-A Spearman correlation of ~0.96 between centralised and federated mean |SHAP| profiles suggests that privacy-preserving training did not arbitrarily reshuffle feature importance. For RQ2 and RQ4, this matters: transparency artefacts remain recognisable across governance modes. Practitioners could, in principle, publish SHAP summaries of a federated model without implying that the underlying microdata were centralised.
+A Spearman correlation of 0.956 between centralised Gradient Boosting and federated MLP mean |SHAP| profiles (H2; `run_xai.py`) suggests that privacy-preserving neural training did not arbitrarily reshuffle feature importance relative to the best pooled tree model. For RQ2 and RQ4, this matters: transparency artefacts remain recognisable across governance modes. Practitioners could, in principle, publish SHAP summaries of a federated model without implying that the underlying microdata were centralised.
 
-Caveats remain. KernelExplainer used subsamples; rankings can shift with background choice. Property-type one-hot features fragment importance across related categories (e.g., multiple hotel/office encodings). Future work should aggregate SHAP by semantic groups and compare TreeExplainer on the gradient boosting model for higher fidelity.
+Caveats remain. KernelExplainer used subsamples; rankings can shift with background choice. Property-type one-hot features fragment importance across related categories (e.g., multiple hotel/office encodings). A supplementary RF-versus-federated bar chart (`shap_comparison.png`) has a lower rank correlation (ρ = 0.776), as expected when comparing a tree ensemble with a neural model; that figure is not the H2 statistic. Future work should aggregate SHAP by semantic groups and compare TreeExplainer on the gradient boosting model for higher fidelity.
 
 ## 5.3 Data limitations and honesty about “high-rise”
 

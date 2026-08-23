@@ -16,7 +16,7 @@ Using floor area ≥ 5,000 m² as a commercial high-rise proxy is imperfect but 
 
 ## B.4 Train/test composition
 
-The 80/20 split produced 4,439 training rows and 1,110 test rows. Feature expansion to 87 columns reflects one-hot encoding of rich categorical fields. Sparse categoricals (rare property types) can create fragile columns; regularised trees handle this better than unregularised linear models, partially explaining boosting’s edge.
+Non-positive targets and 1st–99th percentile clipping removed 114 of the 5,663 filtered rows, leaving 5,549 records. The 80/20 split then produced 4,439 training rows and 1,110 test rows. Feature expansion to 87 columns reflects one-hot encoding of rich categorical fields. Sparse categoricals (rare property types) can create fragile columns; regularised trees handle this better than unregularised linear models, partially explaining boosting’s edge.
 
 ## B.5 Model-by-model commentary
 
@@ -44,15 +44,25 @@ Given Spearman ≈ 0.96, a single SHAP dashboard template could serve both centr
 
 ## B.9 Figure guide
 
-| Figure file | What to say in viva |
-|----------|---------------------|
-| eda_target_hist.png | Target distribution is right-skewed; justify clipping |
-| eda_city_counts.png | London dominates sample size |
-| eda_energy_by_city.png | Means similar → mild non-IID |
-| baseline_rmse.png | GB wins among central models |
-| federated_convergence.png | FL learns across rounds |
-| shap_importance_central_*.png | Storey & typology drive predictions |
-| pred_vs_actual_*.png | Errors grow with magnitude |
+Compiled Word/PDF numbering (sequential reading order):
+
+| Figure | File | What to say in viva |
+|--------|------|---------------------|
+| 4.1 | eda_target_hist.png | Target is right-skewed; justify 1st–99th percentile clipping |
+| 4.2 | eda_city_counts.png | London dominates sample size |
+| 4.3 | eda_energy_by_city.png | Medians similar → mild non-IID |
+| 4.4 | eda_area_vs_energy.png | Cross-sectional area–energy scatter |
+| 4.5 | baseline_rmse.png | Gradient Boosting wins among central models |
+| 4.6 | baseline_r2.png | Moderate absolute R² for EPC intensity |
+| 4.7 | pred_vs_actual_gradient_boosting.png | Errors grow with magnitude |
+| 4.7b | pred_vs_actual_mlp.png | Central MLP residuals (FL comparison baseline) |
+| 4.8 | federated_convergence.png | FedAvg vs FedProx over 8 rounds; both converge by round 6 |
+| 4.9 | pred_vs_actual_federated.png | Federated residuals vs actual |
+| 4.10 | federated_convergence_20rounds.png | Independent 20-round run with central baselines |
+| 4.11 | shap_comparison.png | Supplementary RF vs federated SHAP (not the H2 GB test) |
+| 4.12 | fig3_shap_summary_federated.png | Federated SHAP summary |
+| 4.13 | per_client_shap_comparison.png | H3 per-client SHAP / Jaccard |
+| 4.14 | Streamlit screenshot | Interactive PP-XAI demo |
 
 ## B.10 Table guide
 

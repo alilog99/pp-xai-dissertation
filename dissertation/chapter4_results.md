@@ -21,7 +21,7 @@ Figures: `results/figures/eda_target_hist.png`, `eda_city_counts.png`, `eda_ener
 
 ## 4.2 Preprocessing summary
 
-After cleaning and split: **4,439** training and **1,110** test samples with **87** one-hot-expanded features. Client matrices: London 3,379; Manchester 1,136; Birmingham 1,033 transformed rows.
+After non-positive target removal and 1st–99th percentile clipping, **5,549** of the 5,663 filtered records remained. An 80/20 split then produced **4,439** training and **1,110** test samples with **87** one-hot-expanded features. Client matrices: London 3,379; Manchester 1,136; Birmingham 1,033 transformed rows.
 
 ## 4.3 Centralised baseline performance (RQ1 context)
 
@@ -54,7 +54,7 @@ Final federated metrics: RMSE **118.21**, MAE **84.81**, R² **0.518**, MAPE **4
 
 ### 4.4.1 Extended convergence (20 rounds)
 
-FedAvg and FedProx were extended to 20 rounds (`federated_convergence_20rounds.png`, `fl_strategy_comparison.csv`). FedAvg improved from RMSE 117.80 (R8 in the extension run) to **116.23** (R20, R² 0.534); FedProx reached **115.48** (R² 0.540). Both were within 5% of central MLP RMSE by round 4. Primary reported RQ1 numbers remain the eight-round artefacts above.
+FedAvg and FedProx were extended to 20 rounds in an **independent** longer-horizon run (`federated_convergence_20rounds.png`, `fl_strategy_comparison.csv`). Round-8 RMSE in that run (117.80) therefore differs slightly from Table 4.3 (118.21). FedAvg improved from RMSE 117.80 (R8) to **116.23** (R20, R² 0.534); FedProx reached **115.48** (R² 0.540). Both were within 5% of central MLP RMSE by round 4. Primary reported RQ1 numbers remain the eight-round artefacts above.
 
 ## 4.5 Statistical comparison
 
@@ -70,9 +70,11 @@ The gap is statistically significant but small in practical magnitude, supportin
 
 ## 4.6 Explainability results (RQ2, RQ3, H3)
 
-SHAP mean |SHAP| Spearman correlation between centralised gradient boosting and federated MLP: **0.956** (p ≈ 5.7×10⁻⁴⁷). **H2 supported** (ρ > 0.85). Top drivers include `storey_count`, hotel/office/storage property-type indicators, and natural gas fuel.
+Primary H2 uses KernelExplainer on centralised Gradient Boosting versus the federated MLP: Spearman **0.956** (p ≈ 5.7×10⁻⁴⁷). **H2 supported** (ρ > 0.85). Top drivers include `storey_count`, hotel/office/storage property-type indicators, and natural gas fuel.
 
-**H3:** Per-client TreeExplainer SHAP on centralised GB yielded average pairwise Jaccard of top-5 sets = **0.78** (PASS). 4/5 features appear in all three clients; 5/5 in ≥2/3. Figure: `per_client_shap_comparison.png`.
+A supplementary bar chart (`shap_comparison.png`) compares federated weighted SHAP with centralised **Random Forest** attributions (ρ = 0.776; top-5 Jaccard = 0.667). That cross-family figure is not the H2 test statistic. Rank 10 in the federated weighted list is `cat__property_type_C1 Hotels`, not `floor_area` (which ranks near 20th).
+
+**H3:** Per-client TreeExplainer SHAP on centralised GB yielded average pairwise Jaccard of top-5 sets = **0.78** (PASS; criterion > 0.60). 4/5 features appear in all three clients; 5/5 in ≥2/3. Figure: `per_client_shap_comparison.png`.
 
 **RQ2:** Federated explanations are highly stable relative to centralised SHAP rankings.  
 **RQ3:** Dominant features are storey-related numerics and property/fuel categoricals; rankings remain consistent across clients and training regimes.
@@ -86,7 +88,7 @@ The Streamlit app at `src/webapp/app.py` loads artefacts and serves interactive 
 | RQ | Empirical finding |
 |----|-------------------|
 | RQ1 | FedAvg MLP R² 0.52 ≈ central MLP; close to best GB 0.56 |
-| RQ2 | SHAP Spearman 0.96 between central and federated |
+| RQ2 | SHAP Spearman 0.96 between central GB and federated MLP |
 | RQ3 | Storey count, property type, fuel dominate |
 | RQ4 | Discussed in Chapter 5 as governance implication of stable XAI under FL |
 
