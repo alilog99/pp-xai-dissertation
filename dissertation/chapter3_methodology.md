@@ -11,25 +11,26 @@ Hypotheses:
 - **H3:** Pairwise Jaccard similarity of per-client top-5 SHAP feature sets exceeds 0.60 on average (primary pass criterion). A secondary check requires that at least four of the five leading features appear in all three city clients.
 - **H4:** The Streamlit prototype can present SHAP/LIME outputs with an EU AI Act Article 13 transparency note.
 
-```mermaid
-flowchart LR
-  rawEPC[raw-data EPC CSVs] --> filterHR[High-rise filter]
-  osm[OSM building levels] --> filterHR
-  filterHR --> preprocess[Preprocess encode scale]
-  preprocess --> clients[London Manchester Birmingham]
-  clients --> central[Centralised baselines]
-  clients --> fl[Federated FedAvg]
-  central --> xai[SHAP and LIME]
-  fl --> xai
-  xai --> eval[Metrics and tests]
-  eval --> app[Streamlit prototype]
-```
+Figure 3.1 summarises the end-to-end pipeline from open data ingestion through filtering, centralised and federated training, XAI, evaluation, and the Streamlit demonstrator. Figure 3.2 details the FedAvg client–server architecture. Figure 3.3 shows the EnergyMLP layer stack used as the shared neural model.
 
-## 3.2 Data sources and licence
+## 3.2 Data sources, access, and licensing
 
-Primary data are UK EPC bulk certificate CSVs for domestic and non-domestic buildings (Open Government Licence v3.0), stored locally under `raw-data/domestic-csv/` and `raw-data/non-domestic-csv/`. Years 2018–2026 were scanned in chunked mode to limit memory use (domestic national files exceed tens of gigabytes). Recommendations CSVs were not used. Supplementary OSM GeoJSON files (`building:levels >= 10`) for London, Manchester, and Birmingham were downloaded via Overpass API mirrors and saved to `data/raw/osm/`.
+All primary modelling data are **publicly downloadable**; no restricted or paid datasets are required to reproduce the pipeline.
 
-Attribution for dissertation submission should cite the Ministry of Housing, Communities and Local Government (or successor) EPC open data and OGL v3.0.
+| Dataset | Provider / portal | Licence | How obtained in this project | Local path (gitignored if large) |
+|---------|-------------------|---------|------------------------------|----------------------------------|
+| Domestic EPC certificates (England & Wales), annual bulk CSVs ≈2018–2026 | Ministry of Housing, Communities and Local Government (MHCLG) / successor via **Energy Performance of Buildings Data** portal | Open Government Licence v3.0 | Register at the official portal; download domestic certificate bulk files by year | `raw-data/domestic-csv/certificates-YYYY.csv` |
+| Non-domestic EPC certificates, annual bulk CSVs | Same portal | OGL v3.0 | Download non-domestic certificate bulk files by year | `raw-data/non-domestic-csv/certificates-YYYY.csv` |
+| OpenStreetMap building footprints with `building:levels ≥ 10` (London, Manchester, Birmingham) | OpenStreetMap contributors via Overpass API | Open Database Licence (ODbL) | `scripts/download_osm.py` (Overpass queries) | `data/raw/osm/*.geojson` |
+
+**Canonical download URL (EPC):** https://get-energy-performance-data.communities.gov.uk/  
+(The legacy `epc.opendatacommunities.org` bulk site was retired; use the current Communities portal above.)
+
+**Attribution.** Analyses must acknowledge MHCLG (or successor) EPC open data under OGL v3.0 and OSM contributors under ODbL. Raw multi-gigabyte CSVs are **not** redistributed in the GitHub repository; collaborators must download them themselves (see `docs/DATA_LICENCE.md` and `docs/REPRODUCIBILITY.md`).
+
+**What is not used.** EPC *recommendations* CSVs are excluded: prediction targets and modelling features reside on certificates only. Synthetic generators exist only for dry-run testing when raw files are absent and are flagged if used.
+
+**Scope years.** Certificate years approximately 2018–2026 were scanned in chunked mode because domestic national files exceed several gigabytes per year.
 
 ## 3.3 High-rise filtering and targets
 
@@ -54,9 +55,13 @@ Unified modelling column: `energy_consumption`. Extreme or non-positive targets 
 4. Standard scaling of numeric columns.
 5. 80/20 train–test split (city-stratified when feasible).
 
-The fitted `ColumnTransformer` is persisted to `data/processed/preprocessor.joblib`. Each client CSV is transformed with the same fitted pipeline for FL.
+After clipping, 5,549 of 5,663 filtered records remain; the split yields 4,439 train / 1,110 test rows with 87 encoded features. The fitted `ColumnTransformer` is persisted to `data/processed/preprocessor.joblib`. Each client CSV is transformed with the same fitted pipeline for FL.
 
-## 3.5 Centralised models
+## 3.5 Federated partitioning
+
+To simulate realistic FL conditions, the filtered corpus is partitioned by `source_city` into London, Manchester, and Birmingham clients (sample sizes ≈ 3,449 / 1,160 / 1,054). Mild label skew (city mean energies ≈ 234–243 kWh/m²/year) and strong sample-size imbalance exercise weighted FedAvg without adversarial non-IID extremes.
+
+## 3.6 Centralised models
 
 Models in `src/models/centralised_models.py`:
 
@@ -68,11 +73,15 @@ Models in `src/models/centralised_models.py`:
 
 Metrics: RMSE, MAE, R², MAPE. The best model by RMSE (Gradient Boosting) is used for the primary KernelSHAP comparison versus the federated MLP. A supplementary figure compares federated weighted SHAP with centralised Random Forest attributions.
 
-## 3.6 Federated learning protocol
+## 3.7 Federated learning protocol and model architecture
 
-An MLP (`EnergyMLP` in `src/federated/fl_client.py`) is trained with in-process FedAvg for eight rounds, four local epochs per round, Adam optimiser, MSE loss. Client updates are averaged with weights proportional to local sample sizes. This simulates regional data residency without exposing raw client matrices to other clients during training. A Flower `NumPyClient` wrapper and optional `fl_server.py` support future full-server deployments; the reported results use the reproducible simulator.
+An MLP (`EnergyMLP` in `src/federated/fl_client.py`) is trained with an in-process FedAvg simulator for eight rounds, four local epochs per round, Adam optimiser, and MSE loss. Client updates are averaged with weights proportional to local sample sizes. FedProx (μ = 0.01) is evaluated as a robustness variant. A Flower `NumPyClient` wrapper supports future full-server deployments; reported results use the reproducible simulator.
 
-## 3.7 Explainability protocol
+**Architecture (Figure 3.3).** Input dimension equals the encoded feature width (87). Hidden layers are Linear(87→128)–ReLU–Dropout(0.1), then Linear(128→64)–ReLU–Dropout(0.1), then Linear(64→1). The same topology is used for the centralised neural baseline to keep the FL comparison fair. Trees remain centralised competitors because native FedAvg averages parameters, not tree structures.
+
+**Communication pattern (Figure 3.2).** Each round: (1) server broadcasts global weights; (2) each city client trains locally on its rows only; (3) clients return updated weights; (4) server aggregates. Raw EPC microdata never leave the client partition during federated rounds.
+
+## 3.8 Explainability protocol
 
 On a shared subsample (background ≈ 80 training rows; explain ≈ 60 test rows):
 
@@ -83,11 +92,11 @@ On a shared subsample (background ≈ 80 training rows; explain ≈ 60 test rows
 - Supplementary RF comparison: federated weighted SHAP versus centralised Random Forest (`scripts/run_federated_shap.py`; not the H2 test statistic)
 - **H3:** per-client TreeExplainer SHAP on the centralised Gradient Boosting model applied separately to each city matrix; pairwise Jaccard similarity of top-5 feature sets (`scripts/run_h3_per_client_shap.py`)
 
-## 3.8 Statistical tests
+## 3.9 Statistical tests
 
 Paired Wilcoxon signed-rank and paired t-tests compare absolute errors of the best centralised model versus federated MLP predictions on the identical test set (`src/evaluation/metrics.py`). Cohen’s d on absolute errors and bootstrap percentile 95% confidence intervals for RMSE (2,000 resamples) are also reported (`scripts/run_bootstrap_ci.py`).
 
-## 3.9 Prototype
+## 3.10 Prototype
 
 `src/webapp/app.py` loads the preprocessor and best centralised model, accepts building inputs, returns a predicted energy intensity, and displays global SHAP importance. Launch:
 
@@ -95,35 +104,14 @@ Paired Wilcoxon signed-rank and paired t-tests compare absolute errors of the be
 arch -arm64 /bin/zsh -c 'source scripts/env.sh && streamlit run src/webapp/app.py'
 ```
 
-## 3.10 Ethical considerations
+## 3.11 Ethical considerations
 
-Only open EPC certificate fields and OSM building tags were used. No attempts were made to re-identify individuals beyond data already published. Synthetic data generators exist solely for pipeline testing when raw files are absent and are flagged when used.
+Only open EPC certificate fields and OSM building tags were used. No attempts were made to re-identify individuals beyond data already published. Ethical approval was submitted under University of Hull Faculty processes for low-risk secondary open-data analysis (Appendix C).
 
+## 3.12 Implementation environment and reproducibility
 
-## 3.11 Implementation environment
+Development used Python 3.13 on macOS (Apple Silicon), with dependencies in `requirements.txt`. Key libraries: pandas, scikit-learn, XGBoost, LightGBM, PyTorch, Flower, SHAP, LIME, Streamlit, SciPy. Checklist: (1) place CSVs under `raw-data/`; (2) `source scripts/env.sh`; (3) run `scripts/run_all.sh` or staged scripts; (4) confirm `results/tables/model_comparison.csv` and `xai_stability.json`; (5) launch Streamlit. Full notes: `docs/REPRODUCIBILITY.md`.
 
-Development used Python 3.13 on macOS (Apple Silicon), with a project virtualenv documented in `requirements.txt`. Key libraries: pandas, scikit-learn, XGBoost, LightGBM, PyTorch, Flower, SHAP, LIME, Streamlit, SciPy. Apple Silicon required bundling `libomp` beside XGBoost/LightGBM dylibs and avoiding `DYLD_LIBRARY_PATH` overrides that break NumPy. Launch scripts prefer `arch -arm64 /bin/zsh` when Terminal/Conda may run under Rosetta.
+## 3.13 Summary
 
-## 3.12 Reproducibility checklist
-
-1. Place certificate CSVs under `raw-data/domestic-csv` and `raw-data/non-domestic-csv`.
-2. `source scripts/env.sh`
-3. `/bin/bash scripts/run_all.sh` (or arm64 zsh wrapper per `dev-docs/MANUAL_DATA_NOTES.md`)
-4. Confirm `results/tables/model_comparison.csv` and `xai_stability.json`
-5. `streamlit run src/webapp/app.py`
-
-## 3.13 Metrics definitions
-
-For true values \(y_i\) and predictions \(\hat{y}_i\):
-
-- RMSE = \(\sqrt{\frac{1}{n}\sum (y_i-\hat{y}_i)^2}\)
-- MAE = \(\frac{1}{n}\sum |y_i-\hat{y}_i|\)
-- R² = coefficient of determination
-- MAPE = \(\frac{100}{n}\sum |y_i-\hat{y}_i|/\max(|y_i|,\epsilon)\)
-
-MAPE is sensitive to small targets; it is reported for completeness alongside RMSE/MAE/R².
-
-
-## 3.14 Summary
-
-Chapter 3 defined data filters, leakage controls, models, FedAvg settings, XAI protocol, and tests. Chapter 4 reports the outcomes of executing that protocol on the local EPC corpus.
+Chapter 3 defined publicly accessible data sources, high-rise filters, leakage controls, centralised and federated model architectures (Figures 3.1–3.3), XAI protocol, and tests. Chapter 4 reports outcomes on the local EPC corpus.
