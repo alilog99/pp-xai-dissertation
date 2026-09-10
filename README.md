@@ -14,6 +14,23 @@ Predicts high-rise building energy performance from UK EPC data using:
 3. **XAI** — SHAP (global) + LIME (local)  
 4. **Streamlit prototype** — interactive prediction and explanations  
 
+## Demo (Streamlit)
+
+On Apple Silicon, avoid launching from a conda `(base)` / Rosetta shell (x86_64 Python vs arm64 packages). Use:
+
+```bash
+conda deactivate
+/bin/bash scripts/run_streamlit.sh
+```
+
+Then open **http://localhost:8501**.
+
+One-liner alternative:
+
+```bash
+arch -arm64 /bin/zsh -c 'source scripts/env.sh && streamlit run src/webapp/app.py'
+```
+
 ## Data
 
 Place (or symlink) UK EPC certificate CSVs under `raw-data/`:
@@ -55,8 +72,8 @@ python scripts/run_xai.py
 # Evaluation
 python scripts/run_evaluation.py
 
-# Web app
-streamlit run src/webapp/app.py
+# Web app (prefer the Demo section above on Apple Silicon)
+/bin/bash scripts/run_streamlit.sh
 ```
 
 ## Licence
