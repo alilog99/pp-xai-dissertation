@@ -8,7 +8,7 @@ This folder is the deliverable pack for **Assignment 1: Presentation and Video (
 
 | File | Purpose |
 |------|---------|
-| [`202440724_PPXAI_Presentation.pptx`](202440724_PPXAI_Presentation.pptx) | Live deck (14 slides, widescreen 16:9) |
+| [`202440724_PPXAI_Presentation.pptx`](202440724_PPXAI_Presentation.pptx) | Live deck (14 slides, widescreen 16:9; body text ≥17–20 pt) |
 | [`speaker_notes_15min.md`](speaker_notes_15min.md) | Timed script for the ≤15 min live presentation |
 | [`video_script_10min.md`](video_script_10min.md) | Timed script for the ≤10 min video (presenter visible) |
 | [`assets/figures/`](assets/figures/) | Curated result / architecture figures |

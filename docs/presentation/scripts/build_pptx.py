@@ -75,12 +75,12 @@ def _add_footer(slide, page, total=14):
     _add_textbox(
         slide, Inches(0.5), Inches(7.1), Inches(10), Inches(0.3),
         "PP-XAI  ·  Student ID 202440724  ·  MSc Applied AI  ·  University of Hull",
-        size=10, color=MUTED,
+        size=11, color=MUTED,
     )
     _add_textbox(
         slide, Inches(11.5), Inches(7.1), Inches(1.5), Inches(0.3),
         f"{page} / {total}",
-        size=10, color=MUTED, align=PP_ALIGN.RIGHT,
+        size=11, color=MUTED, align=PP_ALIGN.RIGHT,
     )
 
 
@@ -118,16 +118,16 @@ def build():
 
     _add_textbox(s, Inches(0.8), Inches(1.6), Inches(11.5), Inches(0.4),
                  "MSc Applied Artificial Intelligence  ·  Dissertation Project",
-                 size=14, color=TEAL, bold=True)
+                 size=16, color=TEAL, bold=True)
     _add_textbox(s, Inches(0.8), Inches(2.1), Inches(11.5), Inches(1.6),
                  "Privacy-Preserving Explainable AI for\nBuilding Energy Performance Prediction",
-                 size=32, bold=True, color=SLATE)
+                 size=34, bold=True, color=SLATE)
     _add_textbox(s, Inches(0.8), Inches(3.9), Inches(11.5), Inches(0.6),
                  "A Federated Learning Approach with SHAP and LIME Integration (PP-XAI)",
-                 size=18, color=MUTED)
+                 size=20, color=MUTED)
     _add_textbox(s, Inches(0.8), Inches(5.0), Inches(11.5), Inches(0.8),
                  "Student ID: 202440724\nSupervisor: Mona  ·  University of Hull",
-                 size=16, color=SLATE)
+                 size=18, color=SLATE)
     _add_footer(s, 1)
     _notes(s,
            "Introduce yourself by student ID only if required for anonymity. "
@@ -139,14 +139,14 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.35), Inches(12), Inches(0.5),
-                 "The Problem", size=28, bold=True, color=SLATE)
+                 "The Problem", size=30, bold=True, color=SLATE)
     _add_bullets(s, Inches(0.6), Inches(1.1), Inches(6.2), Inches(4.5), [
         "UK net-zero depends on better building energy insight",
         "Energy Performance Certificates (EPCs) are rich open data for ML",
         "High-rise and large commercial assets raise privacy and governance barriers",
         "Pooling microdata across councils / landlords is often restricted",
         "Centralised ML assumes data can be shared — often it cannot",
-    ], size=17, spacing=12)
+    ], size=19, spacing=14)
     _picture(s, DIAG / "privacy_accuracy_xai_triangle.png",
              Inches(7.0), Inches(1.0), width=Inches(5.8))
     _add_footer(s, 2)
@@ -159,18 +159,18 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.35), Inches(12), Inches(0.5),
-                 "Aim, Research Questions & Objectives", size=26, bold=True, color=SLATE)
+                 "Aim, Research Questions & Objectives", size=28, bold=True, color=SLATE)
     _add_textbox(s, Inches(0.6), Inches(1.0), Inches(12), Inches(0.7),
                  "Aim: Develop and evaluate a privacy-preserving explainable AI framework "
                  "(FedAvg + SHAP/LIME) for high-rise building energy prediction on UK EPC data.",
-                 size=15, color=SLATE)
+                 size=18, color=SLATE)
     _add_bullets(s, Inches(0.6), Inches(1.85), Inches(12), Inches(4.2), [
         "RQ1 — Can federated learning approach centralised accuracy while keeping data local?",
         "RQ2 — How stable are SHAP/LIME explanations across federated vs centralised models?",
         "RQ3 — Which features dominate, and are they consistent across cities?",
         "RQ4 — How can federated XAI support transparency (EU AI Act context)?",
         "Objectives: centralised baselines → FedAvg (3 cities) → SHAP/LIME → stats → Streamlit prototype",
-    ], size=16, spacing=10)
+    ], size=18, spacing=12)
     _add_footer(s, 3)
     _notes(s,
            "State the aim once, then walk RQ1–RQ4 quickly. Emphasise that the "
@@ -181,7 +181,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.25), Inches(12), Inches(0.45),
-                 "Options Analysis — What Was Considered & Why", size=24, bold=True, color=SLATE)
+                 "Options Analysis — What Was Considered & Why", size=28, bold=True, color=SLATE)
     _picture(s, DIAG / "options_analysis.png",
              Inches(0.5), Inches(0.8), width=Inches(12.3))
     _add_footer(s, 4)
@@ -195,7 +195,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.35), Inches(12), Inches(0.5),
-                 "Data & High-Rise Definition", size=26, bold=True, color=SLATE)
+                 "Data & High-Rise Definition", size=28, bold=True, color=SLATE)
     _add_bullets(s, Inches(0.6), Inches(1.0), Inches(6.5), Inches(4.8), [
         "Sources: MHCLG domestic & non-domestic EPCs (OGL v3.0)",
         "Scanned: ~13.8M domestic + ~841K non-domestic rows",
@@ -204,7 +204,7 @@ def build():
         "Non-domestic: floor area ≥ 5,000 m² (excl. schools/hospitals/etc.)",
         "Critical honesty: 99.4% commercial; only 36 residential flats",
         "Leakage controls: excluded CO₂ and asset/env score features",
-    ], size=15, spacing=8)
+    ], size=17, spacing=10)
     _picture(s, FIGS / "eda_city_counts.png",
              Inches(7.3), Inches(1.0), width=Inches(5.4))
     _picture(s, FIGS / "partition_typology_mix.png",
@@ -219,7 +219,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.25), Inches(12), Inches(0.45),
-                 "PP-XAI Pipeline — What Was Developed", size=24, bold=True, color=SLATE)
+                 "PP-XAI Pipeline — What Was Developed", size=28, bold=True, color=SLATE)
     _picture(s, FIGS / "fig3_1_ppxai_pipeline.png",
              Inches(0.6), Inches(0.85), width=Inches(12.1))
     _add_footer(s, 6)
@@ -232,7 +232,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.25), Inches(12), Inches(0.4),
-                 "Federated Architecture & EnergyMLP", size=24, bold=True, color=SLATE)
+                 "Federated Architecture & EnergyMLP", size=28, bold=True, color=SLATE)
     _picture(s, FIGS / "fig3_2_fedavg_architecture.png",
              Inches(0.4), Inches(0.75), width=Inches(7.2))
     _picture(s, FIGS / "fig3_3_mlp_architecture.png",
@@ -240,7 +240,7 @@ def build():
     _add_textbox(s, Inches(0.6), Inches(6.55), Inches(12), Inches(0.4),
                  "3 clients · 8 FedAvg rounds · 4 local epochs · sample-size weighted aggregation  "
                  "(McMahan et al., 2017; Beutel et al., 2020)",
-                 size=12, color=MUTED)
+                 size=15, color=MUTED)
     _add_footer(s, 7)
     _notes(s,
            "Only model updates move — not raw CSVs. Same MLP topology for central "
@@ -251,7 +251,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.25), Inches(12), Inches(0.4),
-                 "Centralised Results — Gradient Boosting Leads", size=24, bold=True, color=SLATE)
+                 "Centralised Results — Gradient Boosting Leads", size=28, bold=True, color=SLATE)
     _picture(s, FIGS / "baseline_rmse.png",
              Inches(0.4), Inches(0.85), width=Inches(6.2))
     _picture(s, FIGS / "baseline_r2.png",
@@ -259,7 +259,7 @@ def build():
     _add_textbox(s, Inches(0.6), Inches(6.4), Inches(12), Inches(0.5),
                  "Best: Gradient Boosting — RMSE 113.04 · MAE 80.02 · R² 0.559  |  "
                  "Moderate accuracy without leakage features (credible, not inflated)",
-                 size=13, color=SLATE)
+                 size=16, color=SLATE)
     _add_footer(s, 8)
     _notes(s,
            "GB is best central model. Stress that excluding emissions features "
@@ -269,7 +269,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.25), Inches(12), Inches(0.4),
-                 "Federated Results (RQ1) — Near Parity with Central MLP", size=22, bold=True, color=SLATE)
+                 "Federated Results (RQ1) — Near Parity with Central MLP", size=26, bold=True, color=SLATE)
     _picture(s, FIGS / "federated_convergence.png",
              Inches(0.4), Inches(0.8), width=Inches(7.5))
     _picture(s, DIAG / "results_headline.png",
@@ -277,7 +277,7 @@ def build():
     _add_textbox(s, Inches(0.6), Inches(6.45), Inches(12), Inches(0.4),
                  "FedAvg R8: RMSE 118.21 · R² 0.518  ≈  central MLP RMSE 117.04 · R² 0.528  "
                  "(H1: within ~1% RMSE of central MLP)",
-                 size=13, color=SLATE)
+                 size=16, color=SLATE)
     _add_footer(s, 9)
     _notes(s,
            "Show convergence from poor R1 to competitive R8. Headline: federated "
@@ -287,7 +287,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.35), Inches(12), Inches(0.5),
-                 "Critical Analysis — Statistical vs Practical Gap", size=24, bold=True, color=SLATE)
+                 "Critical Analysis — Statistical vs Practical Gap", size=28, bold=True, color=SLATE)
     _add_bullets(s, Inches(0.6), Inches(1.1), Inches(12), Inches(5.2), [
         "Wilcoxon (GB vs Fed absolute errors): p = 1.85×10⁻⁵ — statistically significant",
         "Paired t-test: p = 7.97×10⁻⁵",
@@ -295,7 +295,7 @@ def build():
         "Bootstrap 95% CI RMSE overlap: GB 105.9–120.1 vs Fed 110.8–125.4",
         "Interpretation: gap is real but practically small under a privacy constraint",
         "Central GB still wins if pooling is allowed; FedAvg is the relevant benchmark when it is not",
-    ], size=17, spacing=12)
+    ], size=19, spacing=14)
     _add_footer(s, 10)
     _notes(s,
            "This is the critical-analysis slide for the 70–100% band. Do not hide "
@@ -305,7 +305,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.25), Inches(12), Inches(0.4),
-                 "Explainability (RQ2–RQ3) — Stable Across Regimes", size=22, bold=True, color=SLATE)
+                 "Explainability (RQ2–RQ3) — Stable Across Regimes", size=26, bold=True, color=SLATE)
     _picture(s, FIGS / "shap_comparison.png",
              Inches(0.3), Inches(0.75), width=Inches(6.4))
     _picture(s, FIGS / "per_client_shap_comparison.png",
@@ -314,7 +314,7 @@ def build():
                  "H2: Spearman ρ = 0.956 (central GB vs fed MLP)  ·  "
                  "H3: top-5 Jaccard avg 0.78 across cities  ·  "
                  "Drivers: storey_count, property type, natural gas  (Lundberg & Lee, 2017)",
-                 size=12, color=SLATE)
+                 size=15, color=SLATE)
     _add_footer(s, 11)
     _notes(s,
            "Privacy-preserving training did not arbitrarily reshuffle feature importance. "
@@ -324,18 +324,18 @@ def build():
     s = _blank(prs)
     _add_bar(s, ACCENT)
     _add_textbox(s, Inches(0.6), Inches(0.35), Inches(12), Inches(0.5),
-                 "Live Demonstration — Streamlit Prototype", size=26, bold=True, color=SLATE)
+                 "Live Demonstration — Streamlit Prototype", size=28, bold=True, color=SLATE)
     _add_bullets(s, Inches(0.6), Inches(1.2), Inches(12), Inches(4.5), [
         "Interactive prediction of energy intensity (kWh/m²/year)",
         "Building inputs → preprocessor → best model → prediction",
         "Global SHAP importance table for transparency",
         "EU AI Act Article 13 transparency note embedded in the UI (H4)",
         "Demo command:  source scripts/env.sh  &&  streamlit run src/webapp/app.py",
-    ], size=18, spacing=14)
+    ], size=20, spacing=16)
     _add_textbox(s, Inches(0.6), Inches(5.8), Inches(12), Inches(0.8),
                  "Switch to the running app now — try 2–3 non-scripted buildings "
                  "(different cities / property types).",
-                 size=16, bold=True, color=TEAL)
+                 size=18, bold=True, color=TEAL)
     _add_footer(s, 12)
     _notes(s,
            "PAUSE SLIDES. Demo live for ~2–3 minutes. Prefer interactive, "
@@ -346,7 +346,7 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.35), Inches(12), Inches(0.5),
-                 "Discussion & Limitations", size=26, bold=True, color=SLATE)
+                 "Discussion & Limitations", size=28, bold=True, color=SLATE)
     _add_bullets(s, Inches(0.6), Inches(1.1), Inches(12), Inches(5.2), [
         "Trade-off: central GB wins on RMSE if pooling is allowed; FedAvg wins on data residency",
         "Explanation stability reduces fear that FL yields an ‘alien’ uninterpretable model",
@@ -354,7 +354,7 @@ def build():
         "Limitation: in-process FedAvg simulator ≠ production secure FL (no DP / secure aggregation yet)",
         "Limitation: KernelSHAP uses subsamples; rankings can shift with background choice",
         "Strength: leakage ablation and schema honesty strengthen scientific credibility",
-    ], size=16, spacing=10)
+    ], size=18, spacing=12)
     _add_footer(s, 13)
     _notes(s,
            "Be candid. Examiners mark critical evaluation highly. Position limitations "
@@ -364,21 +364,21 @@ def build():
     s = _blank(prs)
     _add_bar(s)
     _add_textbox(s, Inches(0.6), Inches(0.35), Inches(12), Inches(0.5),
-                 "Conclusions, Contributions & Future Work", size=24, bold=True, color=SLATE)
+                 "Conclusions, Contributions & Future Work", size=28, bold=True, color=SLATE)
     _add_bullets(s, Inches(0.6), Inches(1.0), Inches(12), Inches(4.5), [
         "Federated MLP approaches central neural accuracy (R² ≈ 0.52 vs 0.53) without pooling raw data",
         "SHAP rankings remain highly aligned across regimes (ρ ≈ 0.96); cross-city consistency holds",
         "Working Streamlit prototype demonstrates stakeholder-facing prediction + explanations",
         "Contributions: PP-XAI pipeline, FL↔XAI stability evidence, honest high-rise schema audit",
         "Future work: UPRN–OSM residential linkage, DP-SGD / secure aggregation, more clients",
-    ], size=16, spacing=10)
+    ], size=18, spacing=12)
     _add_textbox(s, Inches(0.6), Inches(5.7), Inches(12), Inches(0.6),
                  "Thank you — Questions welcome",
-                 size=22, bold=True, color=TEAL, align=PP_ALIGN.CENTER)
+                 size=24, bold=True, color=TEAL, align=PP_ALIGN.CENTER)
     _add_textbox(s, Inches(0.6), Inches(6.35), Inches(12), Inches(0.4),
                  "Key refs: McMahan et al. (2017); Lundberg & Lee (2017); Ribeiro et al. (2016); "
                  "Beutel et al. (2020); UK EPC data under OGL v3.0",
-                 size=11, color=MUTED, align=PP_ALIGN.CENTER)
+                 size=13, color=MUTED, align=PP_ALIGN.CENTER)
     _add_footer(s, 14)
     _notes(s,
            "Close with the triangle message. Invite Q&A. Keep under 15 minutes total "

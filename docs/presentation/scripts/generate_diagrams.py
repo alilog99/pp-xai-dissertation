@@ -39,7 +39,7 @@ def generate_options_analysis():
     fig.patch.set_facecolor(WHITE)
 
     ax.text(6.25, 6.85, "Options Analysis — What Was Considered vs Chosen",
-            ha="center", va="top", fontsize=16, fontweight="bold", color=SLATE)
+            ha="center", va="top", fontsize=20, fontweight="bold", color=SLATE)
 
     headers = ["Decision", "Options Considered", "Selected", "Why"]
     col_x = [0.3, 2.6, 6.4, 8.6]
@@ -49,7 +49,7 @@ def generate_options_analysis():
     for x, w, h in zip(col_x, col_w, headers):
         _rounded(ax, (x, 5.85), w, 0.55, TEAL, TEAL)
         ax.text(x + w / 2, 6.12, h, ha="center", va="center",
-                fontsize=11, fontweight="bold", color=WHITE, zorder=3)
+                fontsize=14, fontweight="bold", color=WHITE, zorder=3)
 
     rows = [
         (
@@ -92,23 +92,23 @@ def generate_options_analysis():
             _rounded(ax, (x, y - 0.15), w, row_h - 0.1, bg, "#BDC3C7", lw=0.8)
 
         ax.text(col_x[0] + col_w[0] / 2, y + 0.25, dec, ha="center", va="center",
-                fontsize=9.5, fontweight="bold", color=SLATE, zorder=3, wrap=True)
+                fontsize=12, fontweight="bold", color=SLATE, zorder=3, wrap=True)
         ax.text(col_x[1] + col_w[1] / 2, y + 0.25, opts, ha="center", va="center",
-                fontsize=8.5, color=SLATE, zorder=3)
+                fontsize=11, color=SLATE, zorder=3)
 
         sel_color = DEFER if sel == "Deferred" else CHOSEN
         _rounded(ax, (col_x[2] + 0.15, y + 0.02), col_w[2] - 0.3, 0.48,
                  sel_color, sel_color, lw=0)
         ax.text(col_x[2] + col_w[2] / 2, y + 0.26, sel, ha="center", va="center",
-                fontsize=9, fontweight="bold", color=WHITE, zorder=3)
+                fontsize=12, fontweight="bold", color=WHITE, zorder=3)
 
         ax.text(col_x[3] + col_w[3] / 2, y + 0.25, why, ha="center", va="center",
-                fontsize=8.5, color=SLATE, zorder=3)
+                fontsize=11, color=SLATE, zorder=3)
         y -= row_h
 
     ax.text(6.25, 0.35,
             "Green = selected for PP-XAI  ·  Grey = deferred (future hardening)",
-            ha="center", va="center", fontsize=9, color=DEFER, style="italic")
+            ha="center", va="center", fontsize=12, color=DEFER, style="italic")
 
     fig.tight_layout()
     path = OUT / "options_analysis.png"
@@ -118,65 +118,62 @@ def generate_options_analysis():
 
 
 def generate_triangle():
-    fig, ax = plt.subplots(figsize=(10, 8), dpi=200)
+    """Design triangle with clear gaps — no overlapping labels."""
+    fig, ax = plt.subplots(figsize=(10, 10), dpi=200)
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 8.5)
+    ax.set_ylim(0, 10)
     ax.axis("off")
     fig.patch.set_facecolor(WHITE)
 
-    ax.text(5, 8.15, "PP-XAI Design Triangle",
-            ha="center", va="top", fontsize=16, fontweight="bold", color=SLATE)
+    # --- Title band ---
+    ax.text(5, 9.55, "PP-XAI Design Triangle",
+            ha="center", va="top", fontsize=20, fontweight="bold", color=SLATE)
 
-    # Equilateral-ish triangle vertices
+    # --- Triangle (mid band) ---
     verts = np.array([
-        [5.0, 6.6],   # Privacy (top)
-        [1.6, 1.8],   # Accuracy (bottom-left)
-        [8.4, 1.8],   # Explainability (bottom-right)
+        [5.0, 6.35],   # Privacy
+        [1.5, 2.85],   # Accuracy
+        [8.5, 2.85],   # Explainability
     ])
+    ax.add_patch(plt.Polygon(
+        verts, closed=True, fill=True, facecolor="#E8F4F4",
+        edgecolor=TEAL, linewidth=2.5, zorder=1,
+    ))
 
-    tri = plt.Polygon(verts, closed=True, fill=True, facecolor="#E8F4F4",
-                      edgecolor=TEAL, linewidth=2.5, zorder=1)
-    ax.add_patch(tri)
+    hub_xy = (5.0, 4.15)
+    ax.add_patch(Circle(hub_xy, 0.75, facecolor=TEAL, edgecolor=TEAL, zorder=3))
+    ax.text(*hub_xy, "PP-XAI", ha="center", va="center",
+            fontsize=15, fontweight="bold", color=WHITE, zorder=4)
 
-    # Centre hub
-    hub = Circle((5.0, 3.7), 0.85, facecolor=TEAL, edgecolor=TEAL, zorder=3)
-    ax.add_patch(hub)
-    ax.text(5.0, 3.7, "PP-XAI", ha="center", va="center",
-            fontsize=12, fontweight="bold", color=WHITE, zorder=4)
+    for (x, y), color in zip(verts, [TEAL, AMBER, CHOSEN]):
+        ax.add_patch(Circle((x, y), 0.48, facecolor=color, edgecolor=color, zorder=3))
 
-    pillars = [
-        (verts[0], "Privacy", "Data residency\nFedAvg — raw CSVs\nstay on clients", TEAL),
-        (verts[1], "Accuracy", "GB R² ≈ 0.56\nFed MLP R² ≈ 0.52\n≈ central MLP", AMBER),
-        (verts[2], "Explainability", "SHAP + LIME\nSpearman ρ ≈ 0.96\nacross regimes", CHOSEN),
-    ]
+    # Privacy — title then body, both above the top vertex
+    ax.text(5.0, 8.35, "Privacy", ha="center", va="center",
+            fontsize=16, fontweight="bold", color=TEAL)
+    ax.text(5.0, 7.45, "Data residency\nFedAvg — raw CSVs stay on clients",
+            ha="center", va="center", fontsize=12, color=SLATE, linespacing=1.4)
 
-    for (x, y), title, body, color in pillars:
-        circ = Circle((x, y), 0.55, facecolor=color, edgecolor=color, zorder=3)
-        ax.add_patch(circ)
-        # Label outside
-        if title == "Privacy":
-            ax.text(x, y + 0.95, title, ha="center", va="bottom",
-                    fontsize=13, fontweight="bold", color=color)
-            ax.text(x, y + 1.35, body, ha="center", va="bottom",
-                    fontsize=9, color=SLATE)
-        elif title == "Accuracy":
-            ax.text(x - 0.15, y - 0.85, title, ha="center", va="top",
-                    fontsize=13, fontweight="bold", color=color)
-            ax.text(x - 0.15, y - 1.2, body, ha="center", va="top",
-                    fontsize=9, color=SLATE)
-        else:
-            ax.text(x + 0.15, y - 0.85, title, ha="center", va="top",
-                    fontsize=13, fontweight="bold", color=color)
-            ax.text(x + 0.15, y - 1.2, body, ha="center", va="top",
-                    fontsize=9, color=SLATE)
+    # Accuracy — left of / below left vertex (own column)
+    ax.text(1.5, 2.05, "Accuracy", ha="center", va="top",
+            fontsize=16, fontweight="bold", color=AMBER)
+    ax.text(1.5, 1.55, "GB R² ≈ 0.56\nFed MLP R² ≈ 0.52\n≈ central MLP",
+            ha="center", va="top", fontsize=12, color=SLATE, linespacing=1.35)
 
-    ax.text(5, 0.35,
+    # Explainability — right column
+    ax.text(8.5, 2.05, "Explainability", ha="center", va="top",
+            fontsize=16, fontweight="bold", color=CHOSEN)
+    ax.text(8.5, 1.55, "SHAP + LIME\nSpearman ρ ≈ 0.96\nacross regimes",
+            ha="center", va="top", fontsize=12, color=SLATE, linespacing=1.35)
+
+    # Caption — dedicated bottom band (clear of pillar text)
+    ax.plot([0.8, 9.2], [0.55, 0.55], color="#D5D8DC", linewidth=0.8, zorder=1)
+    ax.text(5, 0.25,
             "Privacy and explainability need not be traded for predictive performance",
-            ha="center", va="center", fontsize=10, style="italic", color=SLATE)
+            ha="center", va="center", fontsize=12, style="italic", color=SLATE)
 
-    fig.tight_layout()
     path = OUT / "privacy_accuracy_xai_triangle.png"
-    fig.savefig(path, dpi=200, bbox_inches="tight", facecolor=WHITE)
+    fig.savefig(path, dpi=200, bbox_inches="tight", facecolor=WHITE, pad_inches=0.3)
     plt.close(fig)
     print(f"Wrote {path}")
 
@@ -189,7 +186,7 @@ def generate_results_headline():
     fig.patch.set_facecolor(WHITE)
 
     ax.text(5.5, 3.85, "Headline Results at a Glance",
-            ha="center", va="top", fontsize=15, fontweight="bold", color=SLATE)
+            ha="center", va="top", fontsize=18, fontweight="bold", color=SLATE)
 
     cards = [
         (0.4, "Best Centralised", "Gradient Boosting", "R² = 0.559", "RMSE 113.04", TEAL),
@@ -201,13 +198,13 @@ def generate_results_headline():
         _rounded(ax, (x, 0.55), 3.2, 2.9, WHITE, color, lw=2.5)
         _rounded(ax, (x, 2.85), 3.2, 0.6, color, color, lw=0)
         ax.text(x + 1.6, 3.15, title, ha="center", va="center",
-                fontsize=11, fontweight="bold", color=WHITE, zorder=3)
+                fontsize=14, fontweight="bold", color=WHITE, zorder=3)
         ax.text(x + 1.6, 2.45, sub, ha="center", va="center",
-                fontsize=9, color=DEFER, zorder=3)
+                fontsize=12, color=DEFER, zorder=3)
         ax.text(x + 1.6, 1.75, metric, ha="center", va="center",
-                fontsize=22, fontweight="bold", color=color, zorder=3)
+                fontsize=26, fontweight="bold", color=color, zorder=3)
         ax.text(x + 1.6, 1.05, detail, ha="center", va="center",
-                fontsize=11, color=SLATE, zorder=3)
+                fontsize=14, color=SLATE, zorder=3)
 
     fig.tight_layout()
     path = OUT / "results_headline.png"
