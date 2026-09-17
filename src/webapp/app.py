@@ -166,7 +166,14 @@ estimates from open EPC features and must not replace statutory assessment proce
         Xt = pre.transform(feat[FINAL_FEATURE_COLUMNS])
         pred = float(model.predict(Xt)[0])
         band = energy_to_epc_band(pred)
+        st.session_state["last_pred"] = pred
+        st.session_state["last_band"] = band
+        st.session_state["show_shap_table"] = True
 
+    # Persist prediction output across reruns (e.g. when changing LIME instance)
+    if "last_pred" in st.session_state:
+        pred = st.session_state["last_pred"]
+        band = st.session_state["last_band"]
         st.success(
             f"Predicted energy intensity: **{pred:.1f}** kWh/m²/year  ·  "
             f"Illustrative EPC band: **{band}**"
@@ -182,36 +189,38 @@ estimates from open EPC features and must not replace statutory assessment proce
             )
             st.dataframe(pd.DataFrame(band_rows), use_container_width=True, hide_index=True)
 
-        if not importance.empty:
+        if st.session_state.get("show_shap_table") and not importance.empty:
             st.subheader("Top features (global SHAP)")
             st.dataframe(importance.head(10), use_container_width=True)
-
-        # LIME local explanation panel
-        st.subheader("Local LIME explanation")
-        explanations = lime_data.get("explanations") or []
-        if not explanations:
-            st.warning("No `results/tables/lime_weights.json` found. Run `scripts/run_xai.py` then `scripts/aggregate_lime_weights.py`.")
-        else:
-            labels = [
-                f"{e.get('model', 'model')} · instance {e.get('instance')}"
-                for e in explanations
-            ]
-            choice = st.selectbox("Saved LIME instance", labels, index=0)
-            selected = explanations[labels.index(choice)]
-            render_lime_bar(
-                selected.get("weights", []),
-                title=f"LIME weights — {selected.get('model')} (instance {selected.get('instance')})",
-            )
-            # Also show matching on-disk plot if present
-            fig_name = selected.get("file", "").replace(".csv", ".png")
-            fig_path = ROOT / "results" / "figures" / fig_name
-            if fig_path.exists():
-                st.image(str(fig_path), caption=f"Saved LIME plot: {fig_name}")
 
         st.info(
             "This system provides explanations in support of EU AI Act Article 13 "
             "transparency expectations (research prototype — human oversight required)."
         )
+
+    # LIME panel is always visible (precomputed artefacts; must not sit inside st.button)
+    st.subheader("Local LIME explanation")
+    explanations = lime_data.get("explanations") or []
+    if not explanations:
+        st.warning(
+            "No `results/tables/lime_weights.json` found. "
+            "Run `scripts/run_xai.py` then `scripts/aggregate_lime_weights.py`."
+        )
+    else:
+        labels = [
+            f"{e.get('model', 'model')} · instance {e.get('instance')}"
+            for e in explanations
+        ]
+        choice = st.selectbox("Saved LIME instance", labels, key="lime_instance")
+        selected = explanations[labels.index(choice)]
+        render_lime_bar(
+            selected.get("weights", []),
+            title=f"LIME weights — {selected.get('model')} (instance {selected.get('instance')})",
+        )
+        fig_name = selected.get("file", "").replace(".csv", ".png")
+        fig_path = ROOT / "results" / "figures" / fig_name
+        if fig_path.exists():
+            st.image(str(fig_path), caption=f"Saved LIME plot: {fig_name}")
 
     st.divider()
     st.markdown(
