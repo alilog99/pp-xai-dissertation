@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
+import textwrap
 from pathlib import Path
 
 import joblib
@@ -53,15 +54,32 @@ def load_artefacts():
     return pre, model, best, feature_names, metrics, importance, lime_data
 
 
-def _short_feature(name: str, max_len: int = 42) -> str:
+def _format_lime_label(name: str, width: int = 30) -> str:
+    """Readable multi-line LIME feature label (no ellipsis truncation)."""
+    text = str(name).replace("cat__", "").replace("num__", "")
+    # Keep the LIME rule condition visible and compact
     text = (
-        str(name)
-        .replace("cat__", "")
-        .replace("num__", "")
-        .replace(" <= 0.00", " =0")
-        .replace(" > 0.00", " >0")
+        text.replace(" <= 0.00", " <= 0")
+        .replace(" > 0.00", " > 0")
+        .replace(" <= 0.0", " <= 0")
+        .replace(" > 0.0", " > 0")
     )
-    return text if len(text) <= max_len else text[: max_len - 1] + "…"
+    # Prefer wrapping the long name and keeping the condition on the last line
+    for sep in (" <= ", " > ", " < "):
+        if sep in text:
+            body, _, rest = text.partition(sep)
+            # rest is like "0" or "1.16" possibly with another bound for intervals
+            condition = sep.strip() + " " + rest.strip()
+            wrapped = textwrap.fill(body.strip(), width=width, break_long_words=False, break_on_hyphens=False)
+            # Attach condition to the last wrapped line when it fits; else new line
+            lines = wrapped.split("\n")
+            if len(lines[-1]) + 1 + len(condition) <= width + 8:
+                lines[-1] = f"{lines[-1]} {condition}"
+            else:
+                lines.append(condition)
+            return "\n".join(lines)
+    # Interval form e.g. "-0.08 < storey_count <= 1.16"
+    return textwrap.fill(text, width=width, break_long_words=False, break_on_hyphens=False)
 
 
 def render_lime_bar(weights: list[dict], title: str) -> None:
@@ -70,16 +88,20 @@ def render_lime_bar(weights: list[dict], title: str) -> None:
         st.warning("No LIME weights available for this selection.")
         return
     df = pd.DataFrame(weights).copy()
-    df["label"] = df["feature"].map(_short_feature)
+    df["label"] = df["feature"].map(_format_lime_label)
     df = df.sort_values("weight")
     colours = ["#2B6CB0" if w >= 0 else "#C53030" for w in df["weight"]]
 
-    fig, ax = plt.subplots(figsize=(8, max(3.5, 0.35 * len(df))))
-    ax.barh(df["label"], df["weight"], color=colours)
+    n = len(df)
+    # Extra height per row so wrapped (2-line) y-labels do not collide
+    fig_h = max(4.0, 0.55 * n)
+    fig, ax = plt.subplots(figsize=(10.5, fig_h))
+    ax.barh(df["label"], df["weight"], color=colours, height=0.7)
     ax.axvline(0, color="#4A5568", lw=0.8)
     ax.set_xlabel("LIME weight (contribution to prediction)")
     ax.set_title(title)
-    fig.tight_layout()
+    ax.tick_params(axis="y", labelsize=9)
+    fig.subplots_adjust(left=0.42, right=0.98, top=0.92, bottom=0.10)
     st.pyplot(fig, clear_figure=True)
     plt.close(fig)
 
